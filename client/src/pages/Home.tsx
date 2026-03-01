@@ -7,7 +7,7 @@ import ProfileDropdown from "@/components/ProfileDropdown";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
 
-const ALPHA_LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663393177212/ctrFBa9TUqFriciGXSA6RL/alpha-logo-hq-TqnhfH8uZ7DvCyhJSZYy8U.webp";
+const ALPHA_LOGO_URL = "https://cdn.discordapp.com/attachments/1448837993505755380/1477800356527210527/Screenshot_2026-03-01_163950-removebg-preview.png";
 
 type Language = "ar" | "en";
 
