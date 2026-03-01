@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, bots, InsertBot } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -35,7 +35,7 @@ export async function upsertUser(user: InsertUser): Promise<void> {
     };
     const updateSet: Record<string, unknown> = {};
 
-    const textFields = ["name", "email", "loginMethod"] as const;
+    const textFields = ["name", "email", "loginMethod", "discordId", "discordUsername", "discordAvatar"] as const;
     type TextField = (typeof textFields)[number];
 
     const assignNullable = (field: TextField) => {
@@ -89,4 +89,56 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// Bot management functions
+export async function getAllBots() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get bots: database not available");
+    return [];
+  }
+
+  return await db.select().from(bots);
+}
+
+export async function getBotById(botId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get bot: database not available");
+    return undefined;
+  }
+
+  const result = await db.select().from(bots).where(eq(bots.id, botId)).limit(1);
+
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createBot(bot: InsertBot) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create bot: database not available");
+    return undefined;
+  }
+
+  const result = await db.insert(bots).values(bot);
+  return result;
+}
+
+export async function updateBot(botId: number, updates: Partial<InsertBot>) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update bot: database not available");
+    return undefined;
+  }
+
+  return await db.update(bots).set(updates).where(eq(bots.id, botId));
+}
+
+export async function deleteBot(botId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete bot: database not available");
+    return undefined;
+  }
+
+  return await db.delete(bots).where(eq(bots.id, botId));
+}

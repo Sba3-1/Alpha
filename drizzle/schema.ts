@@ -17,6 +17,10 @@ export const users = mysqlTable("users", {
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
+  // Discord profile fields
+  discordId: varchar("discordId", { length: 64 }).unique(),
+  discordUsername: varchar("discordUsername", { length: 255 }),
+  discordAvatar: text("discordAvatar"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
@@ -25,4 +29,20 @@ export const users = mysqlTable("users", {
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
-// TODO: Add your tables here
+/**
+ * Bots table for the marketplace
+ */
+export const bots = mysqlTable("bots", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
+  type: varchar("type", { length: 100 }).notNull(), // e.g., "moderation", "utility", "fun", "music"
+  price: int("price").notNull(), // Price in cents (e.g., 9999 = 99.99 SAR)
+  purchaseLink: text("purchaseLink").notNull(), // Link to purchase/invite the bot
+  adminId: int("adminId").notNull(), // Reference to users table
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Bot = typeof bots.$inferSelect;
+export type InsertBot = typeof bots.$inferInsert;
