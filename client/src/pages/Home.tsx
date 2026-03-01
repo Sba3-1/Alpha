@@ -32,11 +32,9 @@ export default function Home() {
             </Link>
 
             {isAuthenticated && user?.role === "admin" && (
-              <Link href="/admin">
-                <a className="text-foreground hover:text-secondary transition-colors font-medium flex items-center gap-2">
-                  <Settings className="w-4 h-4" />
-                  Admin
-                </a>
+              <Link href="/admin" className="text-foreground hover:text-secondary transition-colors font-medium flex items-center gap-2">
+                <Settings className="w-4 h-4" />
+                Admin
               </Link>
             )}
 
@@ -71,12 +69,10 @@ export default function Home() {
 
             <div className="flex gap-4 justify-center flex-wrap">
               <Link href="/marketplace">
-                <a>
-                  <Button size="lg" className="gap-2">
-                    <ShoppingCart className="w-5 h-5" />
-                    Browse Bots
-                  </Button>
-                </a>
+                <Button size="lg" className="gap-2">
+                  <ShoppingCart className="w-5 h-5" />
+                  Browse Bots
+                </Button>
               </Link>
 
             {!isAuthenticated && (
