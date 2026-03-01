@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useAppContext } from "@/contexts/AppContext";
 import { useLocation } from "wouter";
 import { ChevronLeft } from "lucide-react";
-import { useState, useEffect } from "react";
 
 type Language = "ar" | "en";
 
@@ -50,15 +49,13 @@ export default function Settings() {
   const { language, setLanguage, theme, setTheme } = useAppContext();
   const [, navigate] = useLocation();
 
-
-
   const t = translations[language];
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  const isOwner = user?.role === "admin" && user?.id === 1; // Owner check
+  const isOwner = user?.role === "admin" && user?.id === 1;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
