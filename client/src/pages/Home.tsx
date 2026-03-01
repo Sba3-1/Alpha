@@ -1,6 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { getLoginUrl } from "@/const";
+import { Loader2 } from "lucide-react";
 import { Link } from "wouter";
 import { ShoppingCart, Settings, LogOut } from "lucide-react";
 
@@ -53,12 +53,11 @@ export default function Home() {
                 </Button>
               </div>
             ) : (
-              <Button
-                onClick={() => (window.location.href = getLoginUrl())}
-                className="gap-2"
-              >
-                Sign In
-              </Button>
+              <a href="/login">
+                <Button className="gap-2">
+                  Sign In
+                </Button>
+              </a>
             )}
           </nav>
         </div>

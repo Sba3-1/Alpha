@@ -69,3 +69,13 @@
 - [x] Create login page with Discord button
 - [x] Update authentication system to use Discord tokens
 - [x] Test Discord login flow end-to-end
+
+
+## Remove Manus OAuth - Complete Refactor
+- [x] Remove Manus OAuth from context.ts
+- [x] Update useAuth hook to use Discord tokens only
+- [x] Remove Manus OAuth routes and references
+- [x] Update all pages to use Discord auth
+- [x] Update tRPC procedures to use Discord user context
+- [x] Remove getLoginUrl and replace with Discord login
+- [x] Test all authentication flows

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ShoppingCart, ExternalLink } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+
 import { useState } from "react";
 import { Link } from "wouter";
 
@@ -14,7 +14,7 @@ export default function Marketplace() {
 
   const handlePurchase = (botId: number) => {
     if (!isAuthenticated) {
-      window.location.href = getLoginUrl();
+      window.location.href = "/login";
       return;
     }
     setSelectedBot(botId);
