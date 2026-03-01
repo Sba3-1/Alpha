@@ -90,15 +90,16 @@ export default function Home() {
                 </a>
               </Link>
 
-              {!isAuthenticated && (
+            {!isAuthenticated && (
+              <a href="/login">
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => (window.location.href = getLoginUrl())}
                 >
                   Sign In with Discord
                 </Button>
-              )}
+              </a>
+            )}
             </div>
           </div>
 

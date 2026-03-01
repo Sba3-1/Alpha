@@ -58,3 +58,14 @@
 - [ ] Test admin dashboard functionality
 - [ ] Create checkpoint for deployment
 - [ ] Provide deployment instructions and URLs to user
+
+
+## Discord OAuth Integration (Custom)
+- [x] Get Discord Client ID and Client Secret from user
+- [x] Implement custom Discord OAuth flow (not Manus)
+- [x] Create Discord login endpoint
+- [x] Create Discord callback handler
+- [x] Store Discord user data in database
+- [x] Create login page with Discord button
+- [x] Update authentication system to use Discord tokens
+- [x] Test Discord login flow end-to-end

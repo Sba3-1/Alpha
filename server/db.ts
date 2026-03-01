@@ -142,3 +142,49 @@ export async function deleteBot(botId: number) {
 
   return await db.delete(bots).where(eq(bots.id, botId));
 }
+
+// Discord user management
+export async function upsertDiscordUser(data: {
+  discordId: string;
+  discordUsername: string;
+  discordEmail: string | null;
+  discordAvatar: string | null;
+  accessToken: string;
+  refreshToken: string;
+  tokenExpiresAt: Date;
+}) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot upsert Discord user: database not available");
+    return undefined;
+  }
+
+  try {
+    const values: InsertUser = {
+      openId: `discord_${data.discordId}`,
+      name: data.discordUsername,
+      email: data.discordEmail,
+      loginMethod: "discord",
+      discordId: data.discordId,
+      discordUsername: data.discordUsername,
+      discordAvatar: data.discordAvatar,
+      lastSignedIn: new Date(),
+    };
+
+    await db.insert(users).values(values).onDuplicateKeyUpdate({
+      set: {
+        discordUsername: data.discordUsername,
+        discordAvatar: data.discordAvatar,
+        email: data.discordEmail,
+        lastSignedIn: new Date(),
+      },
+    });
+
+    // Get the user back
+    const user = await db.select().from(users).where(eq(users.discordId, data.discordId)).limit(1);
+    return user.length > 0 ? user[0] : undefined;
+  } catch (error) {
+    console.error("[Database] Failed to upsert Discord user:", error);
+    throw error;
+  }
+}
