@@ -8,7 +8,6 @@ import Marketplace from "./pages/Marketplace";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import Settings from "./pages/Settings";
-import { useAppContext } from "./contexts/AppContext";
 
 function Router() {
   return (
@@ -24,23 +23,15 @@ function Router() {
   );
 }
 
-function AppContent() {
-  const { theme } = useAppContext();
-
+function App() {
   return (
     <ErrorBoundary>
-      <div className={theme === "dark" ? "dark" : ""}>
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </div>
+      <TooltipProvider>
+        <Toaster />
+        <Router />
+      </TooltipProvider>
     </ErrorBoundary>
   );
-}
-
-function App() {
-  return <AppContent />;
 }
 
 export default App;
