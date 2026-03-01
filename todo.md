@@ -79,3 +79,17 @@
 - [x] Update tRPC procedures to use Discord user context
 - [x] Remove getLoginUrl and replace with Discord login
 - [x] Test all authentication flows
+
+
+## New Features - Phase 2
+- [x] Add Discord profile picture to header (top right)
+- [x] Create profile dropdown menu with logout option
+- [x] Build Settings page with language toggle (AR/EN)
+- [x] Add dark/light theme toggle in settings
+- [ ] Remove background from Alpha logo (make transparent)
+- [x] Enhance admin system - only owner can manage admins
+- [x] Add admin management UI in settings
+- [ ] Promote user 6uvu to admin
+- [x] Create animated background (black + dark blue gradient)
+- [x] Implement dark/light mode context and styling
+- [x] Add theme persistence to localStorage

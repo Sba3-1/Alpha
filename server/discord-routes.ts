@@ -24,8 +24,12 @@ async function createSessionToken(userId: string, discordId: string): Promise<st
 }
 
 export function registerDiscordRoutes(app: Express) {
-  // Get redirect URI from request
+  // Get redirect URI - use environment variable or construct from request
   const getRedirectUri = (req: Request): string => {
+    const redirectUri = process.env.DISCORD_REDIRECT_URI;
+    if (redirectUri) {
+      return redirectUri;
+    }
     const protocol = req.protocol || "https";
     const host = req.get("host") || "localhost:3000";
     return `${protocol}://${host}/api/discord/callback`;

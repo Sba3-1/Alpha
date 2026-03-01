@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Link } from "wouter";
 import { ShoppingCart, Settings, LogOut } from "lucide-react";
+import ProfileDropdown from "@/components/ProfileDropdown";
 
 const ALPHA_LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663393177212/ctrFBa9TUqFriciGXSA6RL/alpha-logo_8d30b071.png";
 
@@ -40,18 +41,7 @@ export default function Home() {
             )}
 
             {isAuthenticated ? (
-              <div className="flex items-center gap-4">
-                <span className="text-sm text-muted-foreground">{user?.name}</span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Logout
-                </Button>
-              </div>
+              <ProfileDropdown />
             ) : (
               <a href="/login">
                 <Button className="gap-2">

@@ -5,6 +5,7 @@ import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { getAllBots, getBotById, createBot, updateBot, deleteBot } from "./db";
+import { promoteToAdmin, demoteFromAdmin, getAllAdmins } from "./admin";
 
 // Admin-only procedure
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -94,6 +95,38 @@ export const appRouter = router({
         }
 
         return await deleteBot(input.id);
+      }),
+  }),
+
+  // Admin management procedures
+  admin: router({
+    // Get all admins (public)
+    listAdmins: publicProcedure.query(async () => {
+      return await getAllAdmins();
+    }),
+
+    // Promote user to admin (owner only)
+    promoteToAdmin: adminProcedure
+      .input(z.object({ userId: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          await promoteToAdmin(input.userId, ctx.user.id);
+          return { success: true, message: "User promoted to admin" };
+        } catch (error: any) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: error.message });
+        }
+      }),
+
+    // Demote admin to user (owner only)
+    demoteFromAdmin: adminProcedure
+      .input(z.object({ userId: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          await demoteFromAdmin(input.userId, ctx.user.id);
+          return { success: true, message: "Admin demoted to user" };
+        } catch (error: any) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: error.message });
+        }
       }),
   }),
 
