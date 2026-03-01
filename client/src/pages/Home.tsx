@@ -40,17 +40,6 @@ export default function Home() {
               </Link>
             )}
 
-            {isAuthenticated && user && (
-              <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-secondary/10">
-                <img
-                  src={user.discordAvatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.discordAvatar}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discordId || '0') % 5}.png`}
-                  alt={user.discordUsername || "Profile"}
-                  className="w-6 h-6 rounded-full"
-                />
-                <span className="text-sm font-medium text-foreground">{user.discordUsername}</span>
-              </div>
-            )}
-
             {isAuthenticated ? (
               <ProfileDropdown />
             ) : (
