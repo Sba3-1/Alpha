@@ -3,14 +3,52 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ShoppingCart, ExternalLink } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useTheme } from "@/contexts/ThemeContext";
+import ProfileDropdown from "@/components/ProfileDropdown";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
+
+type Language = "ar" | "en";
+
+const translations = {
+  ar: {
+    marketplace: "سوق البوتات",
+    home: "الرئيسية",
+    admin: "الإدارة",
+    discover: "اكتشف واشتري بوتات Discord المميزة",
+    noBots: "لا توجد بوتات متاحة حالياً. تحقق لاحقاً!",
+    returnHome: "العودة للرئيسية",
+    price: "السعر",
+    purchase: "شراء",
+    noBotsAvailable: "لا توجد بوتات متاحة",
+  },
+  en: {
+    marketplace: "Bot Marketplace",
+    home: "Home",
+    admin: "Admin",
+    discover: "Discover and purchase premium Discord bots",
+    noBots: "No bots available yet. Check back soon!",
+    returnHome: "Return to Home",
+    price: "Price",
+    purchase: "Purchase",
+    noBotsAvailable: "No bots available",
+  },
+};
 
 export default function Marketplace() {
   const { user, isAuthenticated } = useAuth();
   const { data: bots, isLoading, error } = trpc.bots.list.useQuery();
   const [selectedBot, setSelectedBot] = useState<number | null>(null);
+  const [language, setLanguage] = useState<Language>("en");
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    const savedLang = (localStorage.getItem("language") as Language) || "en";
+    setLanguage(savedLang);
+  }, []);
+
+  const t = translations[language];
 
   const handlePurchase = (botId: number) => {
     if (!isAuthenticated) {
@@ -41,47 +79,52 @@ export default function Marketplace() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-border sticky top-0 bg-white/95 backdrop-blur z-50">
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link href="/">
-            <a className="text-2xl font-bold text-foreground hover:text-secondary transition-colors">
+            <span className="text-2xl font-bold text-foreground hover:text-secondary transition-colors cursor-pointer">
               ALPHA
-            </a>
+            </span>
           </Link>
-          <div className="flex gap-4">
+          <nav className="flex items-center gap-6">
             <Link href="/">
-              <a className="text-foreground hover:text-secondary transition-colors font-medium">
-                Home
-              </a>
+              <span className="text-foreground hover:text-secondary transition-colors font-medium cursor-pointer">
+                {t.home}
+              </span>
             </Link>
             {isAuthenticated && user?.role === "admin" && (
               <Link href="/admin">
-                <a className="text-foreground hover:text-secondary transition-colors font-medium">
-                  Admin
-                </a>
+                <span className="text-foreground hover:text-secondary transition-colors font-medium cursor-pointer">
+                  {t.admin}
+                </span>
               </Link>
             )}
-          </div>
+            {isAuthenticated ? (
+              <ProfileDropdown />
+            ) : (
+              <Button className="gap-2" onClick={() => window.location.href = '/login'}>
+                Sign In
+              </Button>
+            )}
+          </nav>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-16">
         <div className="mb-12">
-          <h1 className="text-6xl font-bold mb-4 text-foreground">BOT MARKETPLACE</h1>
+          <h1 className="text-6xl font-bold mb-4 text-foreground">{t.marketplace.toUpperCase()}</h1>
           <p className="text-lg text-muted-foreground">
-            Discover and purchase premium Discord bots
+            {t.discover}
           </p>
         </div>
 
         {!bots || bots.length === 0 ? (
           <div className="text-center py-24">
-            <p className="text-xl text-muted-foreground mb-4">No bots available yet. Check back soon!</p>
-            <Link href="/">
-              <a>
-                <Button variant="outline">Return to Home</Button>
-              </a>
-            </Link>
+            <p className="text-xl text-muted-foreground mb-4">{t.noBots}</p>
+            <Button variant="outline" onClick={() => window.location.href = '/'}>
+              {t.returnHome}
+            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -107,7 +150,7 @@ export default function Marketplace() {
 
                   <div className="space-y-4">
                     <div className="flex items-center justify-between border-t border-border pt-4">
-                      <span className="text-xs tech-label">PRICE</span>
+                      <span className="text-xs tech-label">{t.price}</span>
                       <span className="text-3xl font-bold text-secondary">
                         {(bot.price / 100).toFixed(2)}
                       </span>
@@ -121,7 +164,7 @@ export default function Marketplace() {
                         onClick={() => handlePurchase(bot.id)}
                       >
                         <ShoppingCart className="w-4 h-4" />
-                        Purchase
+                        {t.purchase}
                       </Button>
                       <Button
                         variant="outline"

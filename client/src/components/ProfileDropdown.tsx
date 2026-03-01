@@ -9,10 +9,32 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Settings, LogOut } from "lucide-react";
 import { useLocation } from "wouter";
+import { useState, useEffect } from "react";
+
+type Language = "ar" | "en";
+
+const translations = {
+  ar: {
+    settings: "الإعدادات",
+    logout: "تسجيل الخروج",
+  },
+  en: {
+    settings: "Settings",
+    logout: "Logout",
+  },
+};
 
 export default function ProfileDropdown() {
   const { user, logout } = useAuth();
   const [, navigate] = useLocation();
+  const [language, setLanguage] = useState<Language>("en");
+
+  useEffect(() => {
+    const savedLang = (localStorage.getItem("language") as Language) || "en";
+    setLanguage(savedLang);
+  }, []);
+
+  const t = translations[language];
 
   if (!user) {
     return null;
@@ -63,7 +85,7 @@ export default function ProfileDropdown() {
           className="cursor-pointer"
         >
           <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
+          <span>{t.settings}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -71,7 +93,7 @@ export default function ProfileDropdown() {
           className="cursor-pointer text-red-600 focus:text-red-600"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Logout</span>
+          <span>{t.logout}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

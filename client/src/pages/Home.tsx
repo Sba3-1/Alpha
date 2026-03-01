@@ -4,20 +4,68 @@ import { Loader2 } from "lucide-react";
 import { Link } from "wouter";
 import { ShoppingCart, Settings, LogOut } from "lucide-react";
 import ProfileDropdown from "@/components/ProfileDropdown";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useState, useEffect } from "react";
 
-const ALPHA_LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663393177212/ctrFBa9TUqFriciGXSA6RL/alpha-logo_8d30b071.png";
+const ALPHA_LOGO_URL = "https://cdn.discordapp.com/attachments/1448837993505755380/1477800356527210527/Screenshot_2026-03-01_163950-removebg-preview.png";
+
+type Language = "ar" | "en";
+
+const translations = {
+  ar: {
+    marketplace: "سوق البوتات",
+    admin: "الإدارة",
+    signIn: "تسجيل الدخول",
+    signInDiscord: "تسجيل الدخول عبر Discord",
+    browseBot: "تصفح البوتات",
+    title: "متجر ألفا",
+    description: "بوتات Discord متقدمة مصممة بدقة. اكتشف واشتري وادمج أدوات أتمتة قوية لخادمك",
+    precision: "الدقة",
+    precisionDesc: "مصممة بتميز تقني وبدقة رياضية",
+    secure: "آمن",
+    secureDesc: "مصادقة Discord مع ربط حساب موثق",
+    scalable: "قابل للتوسع",
+    scalableDesc: "مبني للنمو مع بنية تحتية من الدرجة الأولى",
+    footer: "© 2026 متجر ألفا. جميع الحقوق محفوظة. | مصمم بدقة.",
+  },
+  en: {
+    marketplace: "Marketplace",
+    admin: "Admin",
+    signIn: "Sign In",
+    signInDiscord: "Sign In with Discord",
+    browseBot: "Browse Bots",
+    title: "ALPHA STORE",
+    description: "Premium Discord bots engineered with precision. Discover, purchase, and integrate powerful automation tools for your server.",
+    precision: "PRECISION",
+    precisionDesc: "Engineered with technical excellence and mathematical precision",
+    secure: "SECURE",
+    secureDesc: "Discord OAuth authentication with verified account linking",
+    scalable: "SCALABLE",
+    scalableDesc: "Built for growth with enterprise-grade infrastructure",
+    footer: "© 2026 Alpha Store. All rights reserved. | Engineered with precision.",
+  },
+};
 
 export default function Home() {
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme } = useTheme();
+  const [language, setLanguage] = useState<Language>("en");
+
+  useEffect(() => {
+    const savedLang = (localStorage.getItem("language") as Language) || "en";
+    setLanguage(savedLang);
+  }, []);
+
+  const t = translations[language];
 
   const handleLogout = async () => {
     await logout();
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Navigation Header */}
-      <header className="border-b border-border sticky top-0 bg-white/95 backdrop-blur z-50">
+      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-10 h-10" />
@@ -26,15 +74,17 @@ export default function Home() {
 
           <nav className="flex items-center gap-6">
             <Link href="/marketplace">
-              <a className="text-foreground hover:text-secondary transition-colors font-medium">
-                Marketplace
-              </a>
+              <span className="text-foreground hover:text-secondary transition-colors font-medium cursor-pointer">
+                {t.marketplace}
+              </span>
             </Link>
 
             {isAuthenticated && user?.role === "admin" && (
-              <Link href="/admin" className="text-foreground hover:text-secondary transition-colors font-medium flex items-center gap-2">
-                <Settings className="w-4 h-4" />
-                Admin
+              <Link href="/admin">
+                <span className="text-foreground hover:text-secondary transition-colors font-medium flex items-center gap-2 cursor-pointer">
+                  <Settings className="w-4 h-4" />
+                  {t.admin}
+                </span>
               </Link>
             )}
 
@@ -43,7 +93,7 @@ export default function Home() {
             ) : (
               <a href="/login">
                 <Button className="gap-2">
-                  Sign In
+                  {t.signIn}
                 </Button>
               </a>
             )}
@@ -60,31 +110,31 @@ export default function Home() {
             </div>
 
             <h1 className="text-7xl font-bold mb-6 text-foreground leading-tight">
-              ALPHA STORE
+              {t.title}
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Premium Discord bots engineered with precision. Discover, purchase, and integrate powerful automation tools for your server.
+              {t.description}
             </p>
 
             <div className="flex gap-4 justify-center flex-wrap">
               <Link href="/marketplace">
                 <Button size="lg" className="gap-2">
                   <ShoppingCart className="w-5 h-5" />
-                  Browse Bots
+                  {t.browseBot}
                 </Button>
               </Link>
 
-            {!isAuthenticated && (
-              <a href="/login">
-                <Button
-                  variant="outline"
-                  size="lg"
-                >
-                  Sign In with Discord
-                </Button>
-              </a>
-            )}
+              {!isAuthenticated && (
+                <a href="/login">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                  >
+                    {t.signInDiscord}
+                  </Button>
+                </a>
+              )}
             </div>
           </div>
 
@@ -92,18 +142,18 @@ export default function Home() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                title: "PRECISION",
-                description: "Engineered with technical excellence and mathematical precision",
+                title: t.precision,
+                description: t.precisionDesc,
                 icon: "⚙️",
               },
               {
-                title: "SECURE",
-                description: "Discord OAuth authentication with verified account linking",
+                title: t.secure,
+                description: t.secureDesc,
                 icon: "🔐",
               },
               {
-                title: "SCALABLE",
-                description: "Built for growth with enterprise-grade infrastructure",
+                title: t.scalable,
+                description: t.scalableDesc,
                 icon: "📈",
               },
             ].map((feature, idx) => (
@@ -129,7 +179,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-border py-8 px-4 bg-card">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          <p>© 2026 Alpha Store. All rights reserved. | Engineered with precision.</p>
+          <p>{t.footer}</p>
         </div>
       </footer>
     </div>
