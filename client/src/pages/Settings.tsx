@@ -1,9 +1,10 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAppContext } from "@/contexts/AppContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useLocation } from "wouter";
 import { ChevronLeft } from "lucide-react";
+import { useState, useEffect } from "react";
 
 type Language = "ar" | "en";
 
@@ -46,8 +47,24 @@ const translations = {
 
 export default function Settings() {
   const { user, loading } = useAuth({ redirectOnUnauthenticated: true, redirectPath: "/login" });
-  const { language, setLanguage, theme, setTheme } = useAppContext();
+  const { theme, toggleTheme } = useTheme();
   const [, navigate] = useLocation();
+  const [language, setLanguage] = useState<Language>("en");
+
+  // Load language from localStorage
+  useEffect(() => {
+    const savedLang = (localStorage.getItem("language") as Language) || "en";
+    setLanguage(savedLang);
+    document.documentElement.lang = savedLang;
+    document.documentElement.dir = savedLang === "ar" ? "rtl" : "ltr";
+  }, []);
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem("language", lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  };
 
   const t = translations[language];
 
@@ -83,13 +100,13 @@ export default function Settings() {
           <CardContent className="flex gap-4">
             <Button
               variant={language === "en" ? "default" : "outline"}
-              onClick={() => setLanguage("en")}
+              onClick={() => handleLanguageChange("en")}
             >
               English
             </Button>
             <Button
               variant={language === "ar" ? "default" : "outline"}
-              onClick={() => setLanguage("ar")}
+              onClick={() => handleLanguageChange("ar")}
             >
               العربية
             </Button>
@@ -105,13 +122,13 @@ export default function Settings() {
           <CardContent className="flex gap-4">
             <Button
               variant={theme === "light" ? "default" : "outline"}
-              onClick={() => setTheme("light")}
+              onClick={() => toggleTheme?.("light")}
             >
               {t.lightMode}
             </Button>
             <Button
               variant={theme === "dark" ? "default" : "outline"}
-              onClick={() => setTheme("dark")}
+              onClick={() => toggleTheme?.("dark")}
             >
               {t.darkMode}
             </Button>
