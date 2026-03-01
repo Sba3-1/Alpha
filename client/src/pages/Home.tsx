@@ -40,6 +40,17 @@ export default function Home() {
               </Link>
             )}
 
+            {isAuthenticated && user && (
+              <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-secondary/10">
+                <img
+                  src={user.discordAvatar ? `https://cdn.discordapp.com/avatars/${user.discordId}/${user.discordAvatar}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discordId || '0') % 5}.png`}
+                  alt={user.discordUsername || "Profile"}
+                  className="w-6 h-6 rounded-full"
+                />
+                <span className="text-sm font-medium text-foreground">{user.discordUsername}</span>
+              </div>
+            )}
+
             {isAuthenticated ? (
               <ProfileDropdown />
             ) : (
@@ -128,24 +139,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Blueprint Geometric Accent Section */}
-      <section className="py-16 px-4 border-t border-border">
-        <div className="container mx-auto max-w-4xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            {[
-              { label: "BOTS", value: "∞" },
-              { label: "USERS", value: "∞" },
-              { label: "UPTIME", value: "99.9%" },
-              { label: "SUPPORT", value: "24/7" },
-            ].map((stat, idx) => (
-              <div key={idx} className="py-4">
-                <div className="text-3xl font-bold text-secondary mb-2">{stat.value}</div>
-                <div className="tech-label text-xs">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Footer */}
       <footer className="border-t border-border py-8 px-4 bg-card">

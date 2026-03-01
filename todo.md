@@ -93,3 +93,10 @@
 - [x] Create animated background (black + dark blue gradient)
 - [x] Implement dark/light mode context and styling
 - [x] Add theme persistence to localStorage
+
+
+## Bug Fixes & Improvements
+- [x] Apply theme/language changes globally to entire website
+- [x] Add Discord logo and username in header
+- [x] Improve animated background (more smooth and comfortable)
+- [x] Remove statistics/analytics section from pages

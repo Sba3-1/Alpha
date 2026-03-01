@@ -53,12 +53,19 @@ export default function Settings() {
 
   useEffect(() => {
     const saved = localStorage.getItem("language") as Language | null;
-    if (saved) setLanguage(saved);
+    if (saved) {
+      setLanguage(saved);
+      document.documentElement.lang = saved;
+      document.documentElement.dir = saved === "ar" ? "rtl" : "ltr";
+    }
   }, []);
 
   const handleLanguageChange = (lang: Language) => {
     setLanguage(lang);
     localStorage.setItem("language", lang);
+    // Apply language globally
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   };
 
   const t = translations[language];
@@ -70,9 +77,9 @@ export default function Settings() {
   const isOwner = user?.role === "admin" && user?.id === 1; // Owner check
 
   return (
-    <div className={`min-h-screen ${theme === "dark" ? "bg-slate-950" : "bg-white"}`}>
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className={`border-b ${theme === "dark" ? "border-slate-800 bg-slate-900/95" : "border-border bg-white/95"} sticky top-0 z-50`}>
+      <header className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 py-4 flex items-center gap-4">
           <button
             onClick={() => navigate("/")}
@@ -87,7 +94,7 @@ export default function Settings() {
       {/* Settings Content */}
       <main className="container mx-auto px-4 py-8 max-w-2xl">
         {/* Language Settings */}
-        <Card className={theme === "dark" ? "bg-slate-900 border-slate-800" : ""}>
+        <Card>
           <CardHeader>
             <CardTitle>{t.language}</CardTitle>
             <CardDescription>{t.selectLanguage}</CardDescription>
@@ -109,7 +116,7 @@ export default function Settings() {
         </Card>
 
         {/* Theme Settings */}
-        <Card className={`mt-6 ${theme === "dark" ? "bg-slate-900 border-slate-800" : ""}`}>
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>{t.theme}</CardTitle>
             <CardDescription>Choose your preferred theme</CardDescription>
@@ -131,7 +138,7 @@ export default function Settings() {
         </Card>
 
         {/* Account Info */}
-        <Card className={`mt-6 ${theme === "dark" ? "bg-slate-900 border-slate-800" : ""}`}>
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>{t.account}</CardTitle>
           </CardHeader>
@@ -149,7 +156,7 @@ export default function Settings() {
 
         {/* Admin Management */}
         {isOwner && (
-          <Card className={`mt-6 ${theme === "dark" ? "bg-slate-900 border-slate-800" : ""}`}>
+          <Card className="mt-6">
             <CardHeader>
               <CardTitle>{t.admin}</CardTitle>
               <CardDescription>{t.onlyOwner}</CardDescription>
