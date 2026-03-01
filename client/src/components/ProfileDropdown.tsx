@@ -76,7 +76,7 @@ export default function ProfileDropdown() {
           />
           <div className="flex flex-col gap-1 flex-1 min-w-0">
             <p className="text-sm font-semibold truncate">{user.discordUsername}</p>
-            <p className="text-xs text-muted-foreground truncate">{user.email || "No email"}</p>
+            <p className="text-xs text-muted-foreground truncate">@{user.discordUsername}</p>
           </div>
         </div>
         <DropdownMenuSeparator />
