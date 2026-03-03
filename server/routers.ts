@@ -111,12 +111,8 @@ export const appRouter = router({
         if (bot.userId !== ctx.user.id && ctx.user.role !== 'admin') {
           throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not own this bot' });
         }
-        if (!bot.token) {
-          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Bot token is missing' });
-        }
 
-        // Here you would normally call an external service or spawn a process
-        // For now, we just update the status in the database
+        // Update the status in the database
         const newStatus = input.action === "start" ? "running" : "stopped";
         await updateBotStatus(input.id, newStatus);
         
