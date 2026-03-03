@@ -73,7 +73,7 @@ export default function BotManagement() {
       await toggleStatusMutation.mutateAsync({ id: botId, action });
       
       // ثانياً: إرسال الأمر إلى خادم الجسر (Bridge API) على الخادم الحقيقي
-      const bridgeUrl = `http://82.22.62.101:3000/${action}`;
+      const bridgeUrl = `http://82.22.62.101:8080/${action}`;
       const payload = { botName, botPath };
       
       console.log(`[BotManagement] Sending ${action} request to Bridge API:`, { url: bridgeUrl, payload });
