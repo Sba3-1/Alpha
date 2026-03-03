@@ -74,19 +74,28 @@ export default function BotManagement() {
       
       // ثانياً: إرسال الأمر إلى خادم الجسر (Bridge API) على الخادم الحقيقي
       const bridgeUrl = `http://82.22.62.101:3000/${action}`;
+      const payload = { botName, botPath };
+      
+      console.log(`[BotManagement] Sending ${action} request to Bridge API:`, { url: bridgeUrl, payload });
+      
       const response = await fetch(bridgeUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ botName, botPath }),
+        body: JSON.stringify(payload),
       });
       
+      const responseData = await response.json();
+      
       if (!response.ok) {
-        throw new Error(`Bridge API error: ${response.statusText}`);
+        console.error(`[BotManagement] Bridge API error:`, responseData);
+        throw new Error(responseData.error || `Bridge API error: ${response.statusText}`);
       }
       
+      console.log(`[BotManagement] Bridge API response:`, responseData);
       toast.success(`Bot ${action === "start" ? "started" : "stopped"} successfully!`);
       refetch();
     } catch (error: any) {
+      console.error(`[BotManagement] Error:`, error);
       toast.error(error.message || "Failed to update bot status");
     }
   };
