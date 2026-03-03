@@ -66,10 +66,24 @@ export default function BotManagement() {
     return null;
   }
 
-  const handleToggleStatus = async (botId: number, currentStatus: string) => {
+  const handleToggleStatus = async (botId: number, currentStatus: string, botName: string) => {
     const action = currentStatus === "running" ? "stop" : "start";
     try {
+      // أولاً: تحديث الحالة في قاعدة البيانات
       await toggleStatusMutation.mutateAsync({ id: botId, action });
+      
+      // ثانياً: إرسال الأمر إلى خادم الجسر (Bridge API) على الخادم الحقيقي
+      const bridgeUrl = `http://82.22.62.101:3000/${action}`;
+      const response = await fetch(bridgeUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ botName }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Bridge API error: ${response.statusText}`);
+      }
+      
       toast.success(`Bot ${action === "start" ? "started" : "stopped"} successfully!`);
       refetch();
     } catch (error: any) {
@@ -145,7 +159,7 @@ export default function BotManagement() {
                   </p>
                   <div className="flex gap-3">
                     <Button 
-                      onClick={() => handleToggleStatus(bot.id, bot.status)}
+                      onClick={() => handleToggleStatus(bot.id, bot.status, bot.name)}
                       disabled={toggleStatusMutation.isPending}
                       className={`flex-1 gap-2 font-bold rounded-xl ${
                         bot.status === 'running' 

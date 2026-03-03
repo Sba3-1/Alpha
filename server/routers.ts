@@ -123,6 +123,28 @@ export const appRouter = router({
         return { success: true, status: newStatus };
       }),
 
+    // Assign bot to user (protected - for free bots)
+    assignToUser: protectedProcedure
+      .input(z.object({
+        botId: z.number(),
+        userId: z.number(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const bot = await getBotById(input.botId);
+        if (!bot) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Bot not found' });
+        }
+        if (bot.price !== 0) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Only free bots can be assigned this way' });
+        }
+        if (input.userId !== ctx.user.id && ctx.user.role !== 'admin') {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only assign bots to yourself' });
+        }
+
+        await updateBot(input.botId, { userId: input.userId });
+        return { success: true, message: 'Bot assigned successfully' };
+      }),
+
     // Delete bot (admin only)
     delete: adminProcedure
       .input(z.object({ id: z.number() }))

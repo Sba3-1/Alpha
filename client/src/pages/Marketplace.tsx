@@ -44,6 +44,7 @@ export default function Marketplace() {
   const { user, isAuthenticated, logout } = useAuth();
   const { data: bots, isLoading, error, refetch } = trpc.bots.list.useQuery();
   const [language, setLanguage] = useState<Language>("en");
+  const assignBotMutation = trpc.bots.assignToUser.useMutation();
 
   useEffect(() => {
     const savedLang = (localStorage.getItem("language") as Language) || "en";
@@ -52,7 +53,7 @@ export default function Marketplace() {
 
   const t = translations[language];
 
-  const handlePurchase = (bot: any) => {
+  const handlePurchase = async (bot: any) => {
     if (!isAuthenticated) {
       window.location.href = "/login";
       return;
@@ -61,11 +62,17 @@ export default function Marketplace() {
     if (bot.soldOut === 1) return;
 
     if (bot.price === 0) {
-      // For free bots, open the invite link
-      if (bot.inviteLink) {
-        window.open(bot.inviteLink, "_blank");
-      } else if (bot.purchaseLink) {
-        window.open(bot.purchaseLink, "_blank");
+      // For free bots: assign to user and open the invite link
+      try {
+        await assignBotMutation.mutateAsync({ botId: bot.id, userId: user!.id });
+        if (bot.inviteLink) {
+          window.open(bot.inviteLink, "_blank");
+        } else if (bot.purchaseLink) {
+          window.open(bot.purchaseLink, "_blank");
+        }
+      } catch (error: any) {
+        console.error("Failed to assign bot:", error);
+        alert("Failed to get bot. Please try again.");
       }
     } else {
       // For paid bots, show maintenance message
@@ -184,7 +191,7 @@ export default function Marketplace() {
 
                     <Button
                       variant="default"
-                      disabled={bot.soldOut === 1}
+                      disabled={bot.soldOut === 1 || assignBotMutation.isPending}
                       className={`w-full py-6 font-bold rounded-xl transition-all ${
                         bot.soldOut === 1 
                         ? 'bg-muted text-muted-foreground cursor-not-allowed' 
