@@ -69,6 +69,7 @@ async function ensureTablesExist(db: any) {
         "adminId" INTEGER NOT NULL,
         "token" TEXT,
         "userId" INTEGER,
+        "botPath" TEXT,
         "status" VARCHAR(20) DEFAULT 'stopped' NOT NULL,
         "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
         "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL
@@ -81,6 +82,7 @@ async function ensureTablesExist(db: any) {
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "soldOut" INTEGER DEFAULT 0 NOT NULL;`);
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "token" TEXT;`);
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "userId" INTEGER;`);
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "botPath" TEXT;`);
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "status" VARCHAR(20) DEFAULT 'stopped' NOT NULL;`);
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "inviteLink" TEXT;`);
       // Make purchaseLink nullable if it isn't already
