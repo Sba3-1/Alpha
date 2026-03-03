@@ -40,6 +40,7 @@ const translations = {
     type: "النوع",
     price: "السعر (SAR)",
     purchaseLink: "رابط الشراء",
+    inviteLink: "رابط الانفايت",
     botToken: "توكن البوت (Discord Token)",
     assignTo: "تعيين لمستخدم (اختياري)",
     none: "لا يوجد",
@@ -53,6 +54,7 @@ const translations = {
     home: "الرئيسية",
     marketplace: "المتجر",
     imageUrl: "رابط الصورة",
+    profileImage: "صورة البروفايل",
     soldOut: "نفذت الكمية",
     available: "متوفر",
   },
@@ -67,6 +69,7 @@ const translations = {
     type: "Type",
     price: "Price (SAR)",
     purchaseLink: "Purchase Link",
+    inviteLink: "Invite Link",
     botToken: "Bot Token (Discord Token)",
     assignTo: "Assign to User (Optional)",
     none: "None",
@@ -80,6 +83,7 @@ const translations = {
     home: "Home",
     marketplace: "Marketplace",
     imageUrl: "Image URL",
+    profileImage: "Profile Image",
     soldOut: "Sold Out",
     available: "Available",
   },
@@ -106,6 +110,7 @@ export default function AdminDashboard() {
     type: "Moderation",
     price: "",
     purchaseLink: "",
+    inviteLink: "",
     imageUrl: "",
     token: "",
     userId: "none",
@@ -139,6 +144,7 @@ export default function AdminDashboard() {
         type: bot.type,
         price: (bot.price / 100).toString(),
         purchaseLink: bot.purchaseLink,
+        inviteLink: bot.inviteLink || "",
         imageUrl: bot.imageUrl || "",
         token: bot.token || "",
         userId: bot.userId ? bot.userId.toString() : "none",
@@ -152,6 +158,7 @@ export default function AdminDashboard() {
         type: "Moderation",
         price: "",
         purchaseLink: "",
+        inviteLink: "",
         imageUrl: "",
         token: "",
         userId: "none",
@@ -347,8 +354,12 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label className="font-bold">{t.imageUrl}</Label>
-              <Input value={botFormData.imageUrl} onChange={e => setBotFormData({...botFormData, imageUrl: e.target.value})} className="bg-muted/30 border-none rounded-xl" />
+              <Label className="font-bold">{t.inviteLink}</Label>
+              <Input value={botFormData.inviteLink} onChange={e => setBotFormData({...botFormData, inviteLink: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder="https://discord.com/api/oauth2/authorize?..." />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-bold">{t.profileImage}</Label>
+              <Input value={botFormData.imageUrl} onChange={e => setBotFormData({...botFormData, imageUrl: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder="https://example.com/bot-image.png" />
             </div>
             <div className="space-y-2">
               <Label className="font-bold text-cyan-400">{t.botToken}</Label>

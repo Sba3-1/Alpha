@@ -61,8 +61,14 @@ export default function Marketplace() {
     if (bot.soldOut === 1) return;
 
     if (bot.price === 0) {
-      window.open(bot.purchaseLink, "_blank");
+      // For free bots, open the invite link
+      if (bot.inviteLink) {
+        window.open(bot.inviteLink, "_blank");
+      } else if (bot.purchaseLink) {
+        window.open(bot.purchaseLink, "_blank");
+      }
     } else {
+      // For paid bots, show maintenance message
       alert(t.underMaintenance);
     }
   };

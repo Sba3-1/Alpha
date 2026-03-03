@@ -39,6 +39,7 @@ export const bots = pgTable("bots", {
   type: varchar("type", { length: 100 }).notNull(), // e.g., "moderation", "utility", "fun", "music"
   price: integer("price").notNull(), // Price in cents (e.g., 9999 = 99.99 SAR)
   purchaseLink: text("purchaseLink").notNull(), // Link to purchase/invite the bot
+  inviteLink: text("inviteLink"), // Discord invite link for the bot
   imageUrl: text("imageUrl"), // Bot profile image URL
   soldOut: integer("soldOut").default(0).notNull(), // 0 = available, 1 = sold out
   adminId: integer("adminId").notNull(), // Reference to users table
