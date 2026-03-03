@@ -3,7 +3,7 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-// Removed Manus OAuth - using Discord OAuth only
+import { registerOAuthRoutes } from "./oauth";
 import { registerDiscordRoutes } from "../discord-routes";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
@@ -34,7 +34,8 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  // Using Discord OAuth only
+  // OAuth callback under /api/oauth/callback
+  registerOAuthRoutes(app);
   // Discord OAuth routes
   registerDiscordRoutes(app);
   // tRPC API

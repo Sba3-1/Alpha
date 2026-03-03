@@ -3,9 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ShoppingCart, ExternalLink } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { useTheme } from "@/contexts/ThemeContext";
 import ProfileDropdown from "@/components/ProfileDropdown";
-
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 
@@ -21,7 +19,10 @@ const translations = {
     returnHome: "العودة للرئيسية",
     price: "السعر",
     purchase: "شراء",
-    noBotsAvailable: "لا توجد بوتات متاحة",
+    underMaintenance: "الموقع تحت الصيانة حالياً، يرجى المحاولة لاحقاً.",
+    free: "مجاني",
+    soldOut: "نفذت الكمية",
+    getBot: "الحصول على البوت",
   },
   en: {
     marketplace: "Bot Marketplace",
@@ -32,16 +33,17 @@ const translations = {
     returnHome: "Return to Home",
     price: "Price",
     purchase: "Purchase",
-    noBotsAvailable: "No bots available",
+    underMaintenance: "The site is currently under maintenance, please try again later.",
+    free: "Free",
+    soldOut: "Sold Out",
+    getBot: "Get Bot",
   },
 };
 
 export default function Marketplace() {
-  const { user, isAuthenticated } = useAuth();
-  const { data: bots, isLoading, error } = trpc.bots.list.useQuery();
-  const [selectedBot, setSelectedBot] = useState<number | null>(null);
+  const { user, isAuthenticated, logout } = useAuth();
+  const { data: bots, isLoading, error, refetch } = trpc.bots.list.useQuery();
   const [language, setLanguage] = useState<Language>("en");
-  const { theme } = useTheme();
 
   useEffect(() => {
     const savedLang = (localStorage.getItem("language") as Language) || "en";
@@ -50,60 +52,62 @@ export default function Marketplace() {
 
   const t = translations[language];
 
-  const handlePurchase = (botId: number) => {
+  const handlePurchase = (bot: any) => {
     if (!isAuthenticated) {
       window.location.href = "/login";
       return;
     }
-    setSelectedBot(botId);
-    alert("Payment integration coming soon! Please check back later.");
+    
+    if (bot.soldOut === 1) return;
+
+    if (bot.price === 0) {
+      window.open(bot.purchaseLink, "_blank");
+    } else {
+      alert(t.underMaintenance);
+    }
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin w-8 h-8" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Error loading bots</h2>
-          <p className="text-gray-600">{error.message}</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-transparent dark">
+        <Loader2 className="animate-spin w-8 h-8 text-cyan-400" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <Link href="/">
-            <span className="text-2xl font-bold text-foreground hover:text-secondary transition-colors cursor-pointer">
+    <div className="min-h-screen bg-transparent dark text-foreground">
+      <header className="sticky top-0 bg-transparent/95 backdrop-blur z-50 border-b border-border/50">
+        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold text-foreground tracking-tighter">
               ALPHA
             </span>
-          </Link>
-          <nav className="flex items-center gap-6">
+            <span className="text-sm text-muted-foreground">{t.marketplace}</span>
+          </div>
+          <nav className="flex items-center gap-8">
             <Link href="/">
-              <span className="text-foreground hover:text-secondary transition-colors font-medium cursor-pointer">
+              <span className="text-foreground/80 hover:text-foreground transition-colors font-medium cursor-pointer">
                 {t.home}
               </span>
             </Link>
-            {isAuthenticated && user?.role === "admin" && (
+            {(user?.role === "admin" || user?.discordUsername === "6uvu" || user?.discordUsername === "5mcm") && (
               <Link href="/admin">
-                <span className="text-foreground hover:text-secondary transition-colors font-medium cursor-pointer">
+                <span className="text-foreground/80 hover:text-foreground transition-colors font-medium cursor-pointer">
                   {t.admin}
                 </span>
               </Link>
             )}
             {isAuthenticated ? (
-              <ProfileDropdown />
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-bold text-foreground/80">@{user?.discordUsername}</span>
+                  <ProfileDropdown />
+                </div>
+                <button onClick={() => logout()} className="bg-muted/50 px-6 py-2 rounded-xl hover:bg-muted font-bold text-sm">Logout</button>
+              </div>
             ) : (
-              <Button className="gap-2" onClick={() => window.location.href = '/login'}>
+              <Button className="gap-2 rounded-xl px-6 bg-cyan-400 hover:bg-cyan-500 text-black font-bold" onClick={() => window.location.href = '/login'}>
                 Sign In
               </Button>
             )}
@@ -112,11 +116,12 @@ export default function Marketplace() {
       </header>
 
       <div className="container mx-auto px-4 py-16">
-        <div className="mb-12">
-          <h1 className="text-6xl font-bold mb-4 text-foreground">{t.marketplace.toUpperCase()}</h1>
-          <p className="text-lg text-muted-foreground">
-            {t.discover}
-          </p>
+        <div className="mb-12 flex justify-between items-center">
+          <h2 className="text-4xl font-bold tracking-tighter">{t.marketplace}</h2>
+          <Button variant="ghost" size="sm" className="text-muted-foreground gap-2 hover:bg-secondary/10" onClick={() => refetch()}>
+            <Loader2 className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            Refresh
+          </Button>
         </div>
 
         {!bots || bots.length === 0 ? (
@@ -131,13 +136,25 @@ export default function Marketplace() {
             {bots.map((bot) => (
               <Card
                 key={bot.id}
-                className="flex flex-col h-full hover:shadow-lg transition-all hover:border-secondary"
+                className={`flex flex-col h-full bg-card/40/50 border-border/50 hover:shadow-lg transition-all rounded-2xl overflow-hidden ${bot.soldOut === 1 ? 'opacity-75 grayscale-[0.5]' : 'hover:border-cyan-400/50'}`}
               >
-                <CardHeader>
-                  <div className="flex justify-between items-start gap-4">
+                <CardHeader className="relative">
+                  {bot.soldOut === 1 && (
+                    <div className="absolute top-4 right-4 z-10 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter shadow-lg">
+                      {t.soldOut}
+                    </div>
+                  )}
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center overflow-hidden border border-border/50">
+                      {bot.imageUrl ? (
+                        <img src={bot.imageUrl} alt={bot.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-cyan-400/20 to-muted" />
+                      )}
+                    </div>
                     <div>
-                      <CardTitle className="text-2xl text-foreground">{bot.name}</CardTitle>
-                      <CardDescription className="text-xs tech-label mt-2">
+                      <CardTitle className="text-2xl text-foreground font-bold">{bot.name}</CardTitle>
+                      <CardDescription className="text-xs text-cyan-400 font-bold uppercase tracking-widest mt-1">
                         {bot.type}
                       </CardDescription>
                     </div>
@@ -149,31 +166,40 @@ export default function Marketplace() {
                   </p>
 
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between border-t border-border pt-4">
-                      <span className="text-xs tech-label">{t.price}</span>
-                      <span className="text-3xl font-bold text-secondary">
-                        {(bot.price / 100).toFixed(2)}
-                      </span>
-                      <span className="text-sm text-muted-foreground">SAR</span>
+                    <div className="flex items-center justify-between border-t border-border/50 pt-4">
+                      <span className="text-xs font-bold text-muted-foreground uppercase">{t.price}</span>
+                      <div className="flex items-baseline gap-1">
+                        <span className={`text-3xl font-bold ${bot.soldOut === 1 ? 'text-muted-foreground' : 'text-cyan-400'}`}>
+                          {bot.price === 0 ? t.free : (bot.price / 100).toFixed(2)}
+                        </span>
+                        {bot.price !== 0 && <span className="text-sm text-muted-foreground font-bold">SAR</span>}
+                      </div>
                     </div>
 
-                    <div className="flex gap-2">
-                      <Button
-                        variant="default"
-                        className="flex-1 gap-2"
-                        onClick={() => handlePurchase(bot.id)}
-                      >
-                        <ShoppingCart className="w-4 h-4" />
-                        {t.purchase}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => window.open(bot.purchaseLink, "_blank")}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    <Button
+                      variant="default"
+                      disabled={bot.soldOut === 1}
+                      className={`w-full py-6 font-bold rounded-xl transition-all ${
+                        bot.soldOut === 1 
+                        ? 'bg-muted text-muted-foreground cursor-not-allowed' 
+                        : 'bg-cyan-400 hover:bg-cyan-500 text-black shadow-[0_0_20px_rgba(34,211,238,0.2)]'
+                      }`}
+                      onClick={() => handlePurchase(bot)}
+                    >
+                      {bot.soldOut === 1 ? (
+                        t.soldOut
+                      ) : bot.price === 0 ? (
+                        <>
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          {t.getBot}
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-4 h-4 mr-2" />
+                          {t.purchase}
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

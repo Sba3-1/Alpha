@@ -1,11 +1,10 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import { Link } from "wouter";
-import { ShoppingCart, Settings, LogOut } from "lucide-react";
+import { ShoppingCart, Settings, LayoutDashboard } from "lucide-react";
 import ProfileDropdown from "@/components/ProfileDropdown";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useState, useEffect } from "react";
+import { trpc } from "@/lib/trpc";
 
 const ALPHA_LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663393177212/ctrFBa9TUqFriciGXSA6RL/alpha_logo_imgur_aa3f1fac.webp";
 
@@ -14,6 +13,7 @@ type Language = "ar" | "en";
 const translations = {
   ar: {
     marketplace: "سوق البوتات",
+    dashboard: "لوحة التحكم",
     admin: "الإدارة",
     signIn: "تسجيل الدخول",
     signInDiscord: "تسجيل الدخول عبر Discord",
@@ -30,6 +30,7 @@ const translations = {
   },
   en: {
     marketplace: "Marketplace",
+    dashboard: "Dashboard",
     admin: "Admin",
     signIn: "Sign In",
     signInDiscord: "Sign In with Discord",
@@ -47,8 +48,7 @@ const translations = {
 };
 
 export default function Home() {
-  const { user, isAuthenticated, logout } = useAuth();
-  const { theme } = useTheme();
+  const { user, isAuthenticated } = useAuth();
   const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
@@ -58,30 +58,42 @@ export default function Home() {
 
   const t = translations[language];
 
-  const handleLogout = async () => {
-    await logout();
-  };
+  const { data: myBots } = trpc.bots.myBots.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const hasBots = myBots && myBots.length > 0;
+  const isAdmin = user?.role === "admin" || user?.discordUsername === "6uvu" || user?.discordUsername === "5mcm";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       {/* Navigation Header */}
-      <header className="border-b border-border sticky top-0 bg-background/95 backdrop-blur z-50">
+      <header className="border-b border-border sticky top-0 bg-transparent/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-10 h-10" />
-            <span className="text-2xl font-bold text-foreground">ALPHA</span>
+            <span className="text-2xl font-bold text-foreground tracking-tighter">ALPHA</span>
           </div>
 
           <nav className="flex items-center gap-6">
             <Link href="/marketplace">
-              <span className="text-foreground hover:text-secondary transition-colors font-medium cursor-pointer">
+              <span className="text-foreground/80 hover:text-cyan-400 transition-colors font-medium cursor-pointer">
                 {t.marketplace}
               </span>
             </Link>
 
-            {isAuthenticated && user?.role === "admin" && (
+            {isAuthenticated && hasBots && (
+              <Link href="/dashboard">
+                <span className="text-foreground/80 hover:text-cyan-400 transition-colors font-medium flex items-center gap-2 cursor-pointer">
+                  <LayoutDashboard className="w-4 h-4" />
+                  {t.dashboard}
+                </span>
+              </Link>
+            )}
+
+            {isAuthenticated && isAdmin && (
               <Link href="/admin">
-                <span className="text-foreground hover:text-secondary transition-colors font-medium flex items-center gap-2 cursor-pointer">
+                <span className="text-foreground/80 hover:text-cyan-400 transition-colors font-medium flex items-center gap-2 cursor-pointer">
                   <Settings className="w-4 h-4" />
                   {t.admin}
                 </span>
@@ -91,11 +103,11 @@ export default function Home() {
             {isAuthenticated ? (
               <ProfileDropdown />
             ) : (
-              <a href="/login">
-                <Button className="gap-2">
+              <Link href="/login">
+                <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl px-6">
                   {t.signIn}
                 </Button>
-              </a>
+              </Link>
             )}
           </nav>
         </div>
@@ -109,7 +121,7 @@ export default function Home() {
               <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-32 h-32" />
             </div>
 
-            <h1 className="text-7xl font-bold mb-6 text-foreground leading-tight">
+            <h1 className="text-7xl font-bold mb-6 text-foreground leading-tight tracking-tighter">
               {t.title}
             </h1>
 
@@ -119,27 +131,28 @@ export default function Home() {
 
             <div className="flex gap-4 justify-center flex-wrap">
               <Link href="/marketplace">
-                <Button size="lg" className="gap-2">
-                  <ShoppingCart className="w-5 h-5" />
+                <Button size="lg" className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-2xl px-10 py-8 text-xl shadow-[0_0_30px_rgba(34,211,238,0.2)]">
+                  <ShoppingCart className="w-6 h-6" />
                   {t.browseBot}
                 </Button>
               </Link>
 
               {!isAuthenticated && (
-                <a href="/login">
+                <Link href="/login">
                   <Button
                     variant="outline"
                     size="lg"
+                    className="rounded-2xl px-10 py-8 text-xl border-border/50 hover:bg-muted/50"
                   >
                     {t.signInDiscord}
                   </Button>
-                </a>
+                </Link>
               )}
             </div>
           </div>
 
-          {/* Blueprint Grid Accent */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Features Grid */}
+          <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 title: t.precision,
@@ -159,27 +172,25 @@ export default function Home() {
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="p-6 border border-border rounded-lg hover:border-secondary transition-colors group"
+                className="p-8 border border-border/50 rounded-[2rem] bg-card/20 hover:border-cyan-400/30 transition-all group"
               >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">
+                <div className="text-4xl mb-6 group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
-                <h3 className="text-lg font-bold mb-2 text-foreground tech-label">
+                <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-
-
       {/* Footer */}
-      <footer className="border-t border-border py-8 px-4 bg-card">
+      <footer className="border-t border-border/50 py-12 px-4 bg-card/20 mt-12">
         <div className="container mx-auto text-center text-sm text-muted-foreground">
-          <p>{t.footer}</p>
+          <p className="font-medium">{t.footer}</p>
         </div>
       </footer>
     </div>

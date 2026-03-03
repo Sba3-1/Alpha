@@ -1,12 +1,26 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "mysql",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1772501844155,
-      "tag": "0000_empty_richard_fisk",
+      "version": "5",
+      "when": 1772387244999,
+      "tag": "0000_regular_maestro",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1772387405137,
+      "tag": "0001_redundant_major_mapleleaf",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1772502514858,
+      "tag": "0002_early_lady_bullseye",
       "breakpoints": true
     }
   ]

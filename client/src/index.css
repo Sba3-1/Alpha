@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -45,14 +45,13 @@
 
 :root {
   /* Blueprint Technical Aesthetic */
-  --primary: oklch(0.2 0.08 260); /* Deep technical blue */
-  --primary-foreground: oklch(0.98 0.001 0); /* White */
-  --sidebar-primary: oklch(0.25 0.08 260);
+  --primary: oklch(0.6 0.2 250); /* Bright Blue */
+  --primary-foreground: oklch(0.98 0.001 0);
+  --sidebar-primary: oklch(0.6 0.2 250);
   --sidebar-primary-foreground: oklch(0.98 0.001 0);
   
-  /* Accent colors - Pastel Cyan and Soft Pink */
-  --accent-cyan: oklch(0.75 0.15 200); /* Pastel cyan */
-  --accent-pink: oklch(0.8 0.12 330); /* Soft pink */
+  --accent-cyan: oklch(0.7 0.2 190);
+  --accent-pink: oklch(0.6 0.2 330);
   
   /* Chart colors */
   --chart-1: oklch(0.75 0.15 200); /* Cyan */
@@ -63,24 +62,24 @@
   
   --radius: 0.65rem;
   
-  /* Light theme - White grid background */
-  --background: oklch(1 0 0); /* Pure white */
-  --foreground: oklch(0.15 0.02 260); /* Deep black-blue */
-  --card: oklch(0.98 0.001 0); /* Off-white */
-  --card-foreground: oklch(0.15 0.02 260);
-  --popover: oklch(0.98 0.001 0);
-  --popover-foreground: oklch(0.15 0.02 260);
-  --secondary: oklch(0.75 0.15 200); /* Pastel cyan */
-  --secondary-foreground: oklch(0.15 0.02 260);
-  --muted: oklch(0.92 0.004 260); /* Light gray */
-  --muted-foreground: oklch(0.5 0.02 260); /* Medium gray */
-  --accent: oklch(0.8 0.12 330); /* Soft pink */
-  --accent-foreground: oklch(0.15 0.02 260);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 260); /* Light border */
-  --input: oklch(0.98 0.001 0);
-  --ring: oklch(0.75 0.15 200); /* Cyan ring */
+  /* Deep Dark Background */
+  --background: #020617; /* Darkest Navy/Black */
+  --foreground: oklch(0.98 0.01 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 240);
+  --secondary: oklch(0.65 0.2 200);
+  --secondary-foreground: oklch(0.15 0.02 240);
+  --muted: oklch(0.92 0.01 240);
+  --muted-foreground: oklch(0.4 0.02 240);
+  --accent: oklch(0.65 0.2 200);
+  --accent-foreground: oklch(0.15 0.02 240);
+  --destructive: oklch(0.6 0.2 20);
+  --destructive-foreground: oklch(0.98 0.01 0);
+  --border: oklch(0.9 0.01 240);
+  --input: oklch(0.95 0.01 240);
+  --ring: oklch(0.65 0.2 200);
   
   --sidebar: oklch(0.98 0.001 0);
   --sidebar-foreground: oklch(0.15 0.02 260);
@@ -95,23 +94,23 @@
   --primary-foreground: oklch(0.98 0.001 0);
   --sidebar-primary: oklch(0.25 0.08 260);
   --sidebar-primary-foreground: oklch(0.98 0.001 0);
-  --background: oklch(0.08 0.01 260);
-  --foreground: oklch(0.95 0.005 0);
-  --card: oklch(0.12 0.01 260);
-  --card-foreground: oklch(0.95 0.005 0);
-  --popover: oklch(0.12 0.01 260);
-  --popover-foreground: oklch(0.95 0.005 0);
-  --secondary: oklch(0.75 0.15 200);
-  --secondary-foreground: oklch(0.15 0.02 260);
-  --muted: oklch(0.25 0.01 260);
-  --muted-foreground: oklch(0.7 0.005 0);
-  --accent: oklch(0.8 0.12 330);
-  --accent-foreground: oklch(0.15 0.02 260);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.2 0.01 260);
-  --input: oklch(0.15 0.01 260);
-  --ring: oklch(0.75 0.15 200);
+  --background: oklch(0.12 0.02 240); /* Dark Blue-Black */
+  --foreground: oklch(0.98 0.01 0);
+  --card: oklch(0.15 0.03 240);
+  --card-foreground: oklch(0.98 0.01 0);
+  --popover: oklch(0.15 0.03 240);
+  --popover-foreground: oklch(0.98 0.01 0);
+  --secondary: oklch(0.65 0.2 200);
+  --secondary-foreground: oklch(0.98 0.01 0);
+  --muted: oklch(0.2 0.03 240);
+  --muted-foreground: oklch(0.7 0.02 240);
+  --accent: oklch(0.65 0.2 200);
+  --accent-foreground: oklch(0.98 0.01 0);
+  --destructive: oklch(0.6 0.2 20);
+  --destructive-foreground: oklch(0.98 0.01 0);
+  --border: oklch(0.2 0.03 240);
+  --input: oklch(0.18 0.03 240);
+  --ring: oklch(0.65 0.2 200);
   --chart-1: oklch(0.75 0.15 200);
   --chart-2: oklch(0.8 0.12 330);
   --chart-3: oklch(0.3 0.08 260);
@@ -131,46 +130,64 @@
   }
   
   body {
-    @apply bg-background text-foreground;
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    background-color: #020617 !important;
+    color: oklch(0.98 0.01 0) !important;
+    font-family: "Tajawal", system-ui, sans-serif;
     position: relative;
+    min-height: 100vh;
+    margin: 0;
   }
   
-  /* Animated background for dark mode */
+  /* Force transparency on common background classes */
+  .bg-background {
+    background-color: transparent !important;
+  }
+  
+  .bg-card {
+    background-color: rgba(15, 23, 42, 0.4) !important;
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Animated dark background with radial glows matching the screenshot */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.05) 0%, transparent 30%),
+      #020617;
+    pointer-events: none;
+    z-index: -2;
+  }
+
   body.dark::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      -45deg,
-      #0f172a,
-      #1e293b,
-      #0f172a,
-      #1a1f35
-    );
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-    pointer-events: none;
-    z-index: 0;
+    background: 
+      radial-gradient(circle at 0% 0%, rgba(34, 211, 238, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(34, 211, 238, 0.05) 0%, transparent 30%),
+      #020617;
   }
   
-  /* Blueprint grid background pattern for light mode */
-  body:not(.dark)::before {
+  /* Subtle grid overlay */
+  body::after {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-image: 
-      linear-gradient(rgba(0, 100, 200, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 100, 200, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    background-size: 100px 100px;
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
+    opacity: 0.3;
   }
   
   @keyframes gradientShift {
@@ -185,14 +202,42 @@
     }
   }
   
-  /* Ensure content is above grid */
-  body > * {
+  @keyframes buttonPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 10px rgba(34, 211, 238, 0);
+    }
+  }
+  
+  @keyframes buttonGlow {
+    0%, 100% {
+      text-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
+    }
+    50% {
+      text-shadow: 0 0 15px rgba(34, 211, 238, 0.8);
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-3px);
+    }
+  }
+  
+  /* Ensure content is above grid and backgrounds */
+  #root {
     position: relative;
     z-index: 1;
+    background: transparent !important;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-family: "Tajawal", system-ui, sans-serif;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
@@ -265,7 +310,66 @@
   
   /* Smooth theme transitions */
   * {
-    @apply transition-colors duration-300;
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  /* Dynamic button styles */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled) {
+    position: relative;
+    overflow: hidden;
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  button:not(:disabled):hover,
+  [role="button"]:not([aria-disabled="true"]):hover,
+  [type="button"]:not(:disabled):hover,
+  [type="submit"]:not(:disabled):hover,
+  [type="reset"]:not(:disabled):hover {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+  
+  /* Cyan button glow effect */
+  .bg-cyan-400:not(:disabled):hover {
+    animation: buttonPulse 1.5s infinite, slideUp 0.3s ease-out forwards;
+    filter: brightness(1.1);
+  }
+  
+  /* Button ripple effect on click */
+  button:not(:disabled)::after,
+  [role="button"]:not([aria-disabled="true"])::after,
+  [type="button"]:not(:disabled)::after,
+  [type="submit"]:not(:disabled)::after,
+  [type="reset"]:not(:disabled)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  
+  button:not(:disabled):active::after,
+  [role="button"]:not([aria-disabled="true"]):active::after,
+  [type="button"]:not(:disabled):active::after,
+  [type="submit"]:not(:disabled):active::after,
+  [type="reset"]:not(:disabled):active::after {
+    animation: ripple 0.6s ease-out;
+  }
+  
+  @keyframes ripple {
+    to {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+    }
   }
   
   /* Custom scrollbar */
@@ -283,6 +387,7 @@
   
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-secondary/80;
+    animation: buttonGlow 1s ease-in-out infinite;
   }
 
   @media (min-width: 640px) {

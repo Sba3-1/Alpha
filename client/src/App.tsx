@@ -9,6 +9,9 @@ import Marketplace from "./pages/Marketplace";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import Settings from "./pages/Settings";
+import Footer from "./components/Footer";
+import BotManagement from "./pages/BotManagement";
+import UserDashboard from "./pages/UserDashboard";
 
 function Router() {
   return (
@@ -18,6 +21,8 @@ function Router() {
       <Route path={"/marketplace"} component={Marketplace} />
       <Route path={"/admin"} component={AdminDashboard} />
       <Route path={"/settings"} component={Settings} />
+      <Route path={"/bot-management"} component={BotManagement} />
+      <Route path={"/dashboard"} component={UserDashboard} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
@@ -27,10 +32,15 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="light" switchable>
+      <ThemeProvider defaultTheme="dark" switchable={false}>
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <div className="flex flex-col min-h-screen">
+            <main className="flex-grow">
+              <Router />
+            </main>
+            <Footer />
+          </div>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

@@ -19,8 +19,6 @@ async function getUserFromToken(token: string): Promise<User | null> {
     const verified = await jwtVerify(token, JWT_SECRET);
     const payload = verified.payload as any;
 
-    // Return minimal user object from token
-    // In production, you'd fetch full user from database
     return {
       id: parseInt(payload.userId),
       openId: `discord_${payload.discordId}`,
@@ -36,6 +34,7 @@ async function getUserFromToken(token: string): Promise<User | null> {
       lastSignedIn: new Date(),
     };
   } catch (error) {
+    console.error("[Auth] JWT verification failed:", error);
     return null;
   }
 }
@@ -52,7 +51,7 @@ export async function createContext(
     const sessionCookie = cookieArray.find((c) => c.trim().startsWith(`${COOKIE_NAME}=`));
 
     if (sessionCookie) {
-      const token = sessionCookie.split("=")[1];
+      const token = sessionCookie.trim().split("=")[1];
       if (token) {
         user = await getUserFromToken(token);
       }

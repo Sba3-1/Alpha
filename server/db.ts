@@ -1,25 +1,94 @@
-import { eq, sql } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
 import { InsertUser, users, bots, InsertBot } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import { sql } from "drizzle-orm";
 
+let _pool: pg.Pool | null = null;
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
+// Create a connection pool to handle timeouts and reconnections better
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      const client = postgres(process.env.DATABASE_URL, {
-        ssl: 'require',
+      console.log("[Database] Initializing Postgres connection pool...");
+      _pool = new pg.Pool({
+        connectionString: process.env.DATABASE_URL,
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 20000,
       });
-      _db = drizzle(client);
+      _db = drizzle(_pool);
+      console.log("[Database] Postgres connection pool initialized successfully.");
+      
+      // Ensure tables exist
+      await ensureTablesExist(_db);
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      console.error("[Database] Failed to initialize connection pool:", error);
       _db = null;
     }
   }
   return _db;
+}
+
+async function ensureTablesExist(db: any) {
+  try {
+    console.log("[Database] Ensuring tables exist...");
+    
+    // Create users table if not exists
+    await db.execute(sql`
+      CREATE TABLE IF NOT EXISTS "users" (
+        "id" SERIAL PRIMARY KEY,
+        "openId" VARCHAR(64) NOT NULL UNIQUE,
+        "name" TEXT,
+        "email" VARCHAR(320),
+        "loginMethod" VARCHAR(64),
+        "role" TEXT DEFAULT 'user' NOT NULL,
+        "discordId" VARCHAR(64) UNIQUE,
+        "discordUsername" VARCHAR(255),
+        "discordAvatar" TEXT,
+        "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
+        "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
+        "lastSignedIn" TIMESTAMP DEFAULT NOW() NOT NULL
+      );
+    `);
+    
+    // Create bots table if not exists
+    await db.execute(sql`
+      CREATE TABLE IF NOT EXISTS "bots" (
+        "id" SERIAL PRIMARY KEY,
+        "name" VARCHAR(255) NOT NULL,
+        "description" TEXT,
+        "type" VARCHAR(100) NOT NULL,
+        "price" INTEGER NOT NULL,
+        "purchaseLink" TEXT NOT NULL,
+        "imageUrl" TEXT,
+        "soldOut" INTEGER DEFAULT 0 NOT NULL,
+        "adminId" INTEGER NOT NULL,
+        "token" TEXT,
+        "userId" INTEGER,
+        "status" VARCHAR(20) DEFAULT 'stopped' NOT NULL,
+        "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
+        "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL
+      );
+    `);
+    
+    // Add columns if they don't exist (for existing tables)
+    try {
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "imageUrl" TEXT;`);
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "soldOut" INTEGER DEFAULT 0 NOT NULL;`);
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "token" TEXT;`);
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "userId" INTEGER;`);
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "status" VARCHAR(20) DEFAULT 'stopped' NOT NULL;`);
+    } catch (e) {
+      console.log("[Database] Columns already exist or error adding them.");
+    }
+    
+    console.log("[Database] Tables checked/created successfully.");
+  } catch (error) {
+    console.error("[Database] Error ensuring tables exist:", error);
+  }
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
@@ -34,48 +103,27 @@ export async function upsertUser(user: InsertUser): Promise<void> {
   }
 
   try {
-    const values: InsertUser = {
-      openId: user.openId,
-    };
-    const updateSet: Record<string, unknown> = {};
-
-    const textFields = ["name", "email", "loginMethod", "discordId", "discordUsername", "discordAvatar"] as const;
-    type TextField = (typeof textFields)[number];
-
-    const assignNullable = (field: TextField) => {
-      const value = user[field];
-      if (value === undefined) return;
-      const normalized = value ?? null;
-      values[field] = normalized;
-      updateSet[field] = normalized;
-    };
-
-    textFields.forEach(assignNullable);
-
-    if (user.lastSignedIn !== undefined) {
-      values.lastSignedIn = user.lastSignedIn;
-      updateSet.lastSignedIn = user.lastSignedIn;
-    }
+    const updateSet: any = {};
+    if (user.name !== undefined) updateSet.name = user.name;
+    if (user.email !== undefined) updateSet.email = user.email;
+    if (user.loginMethod !== undefined) updateSet.loginMethod = user.loginMethod;
+    if (user.discordId !== undefined) updateSet.discordId = user.discordId;
+    if (user.discordUsername !== undefined) updateSet.discordUsername = user.discordUsername;
+    if (user.discordAvatar !== undefined) updateSet.discordAvatar = user.discordAvatar;
+    if (user.lastSignedIn !== undefined) updateSet.lastSignedIn = user.lastSignedIn;
+    
     if (user.role !== undefined) {
-      values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
-      values.role = 'admin';
       updateSet.role = 'admin';
     }
 
-    if (!values.lastSignedIn) {
-      values.lastSignedIn = new Date();
-    }
-
-    if (Object.keys(updateSet).length === 0) {
-      updateSet.lastSignedIn = new Date();
-    }
-
-    await db.insert(users).values(values).onConflictDoUpdate({
-      target: users.openId,
-      set: updateSet,
-    });
+    await db.insert(users)
+      .values(user)
+      .onConflictDoUpdate({
+        target: users.openId,
+        set: updateSet
+      });
   } catch (error) {
     console.error("[Database] Failed to upsert user:", error);
     throw error;
@@ -124,8 +172,8 @@ export async function createBot(bot: InsertBot) {
     return undefined;
   }
 
-  const result = await db.insert(bots).values(bot);
-  return result;
+  const result = await db.insert(bots).values(bot).returning();
+  return result[0];
 }
 
 export async function updateBot(botId: number, updates: Partial<InsertBot>) {
@@ -146,6 +194,26 @@ export async function deleteBot(botId: number) {
   }
 
   return await db.delete(bots).where(eq(bots.id, botId));
+}
+
+export async function getBotsByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user bots: database not available");
+    return [];
+  }
+
+  return await db.select().from(bots).where(eq(bots.userId, userId));
+}
+
+export async function updateBotStatus(botId: number, status: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update bot status: database not available");
+    return undefined;
+  }
+
+  return await db.update(bots).set({ status }).where(eq(bots.id, botId));
 }
 
 // Discord user management
@@ -176,19 +244,29 @@ export async function upsertDiscordUser(data: {
       lastSignedIn: new Date(),
     };
 
-    await db.insert(users).values(values).onConflictDoUpdate({
-      target: users.discordId,
-      set: {
-        discordUsername: data.discordUsername,
-        discordAvatar: data.discordAvatar,
-        email: data.discordEmail,
-        lastSignedIn: new Date(),
-      },
-    });
+    console.log("[Database] Upserting Discord user (Postgres):", values.openId);
+    
+    await db.insert(users)
+      .values(values)
+      .onConflictDoUpdate({
+        target: users.openId,
+        set: {
+          discordUsername: data.discordUsername,
+          discordAvatar: data.discordAvatar,
+          email: data.discordEmail,
+          lastSignedIn: new Date(),
+        }
+      });
 
-    // Get the user back
-    const user = await db.select().from(users).where(eq(users.discordId, data.discordId)).limit(1);
-    return user.length > 0 ? user[0] : undefined;
+    const userResult = await db.select().from(users).where(eq(users.openId, values.openId)).limit(1);
+    
+    if (userResult.length === 0) {
+      console.warn("[Database] User not found after upsert for openId:", values.openId);
+      return undefined;
+    }
+    
+    console.log("[Database] Successfully upserted and retrieved user:", userResult[0].id);
+    return userResult[0];
   } catch (error) {
     console.error("[Database] Failed to upsert Discord user:", error);
     throw error;

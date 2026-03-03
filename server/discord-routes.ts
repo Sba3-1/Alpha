@@ -10,10 +10,13 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "your-secr
 /**
  * Create a simple JWT session token for Discord auth
  */
-async function createSessionToken(userId: string, discordId: string): Promise<string> {
+async function createSessionToken(user: any): Promise<string> {
   const token = await new SignJWT({
-    userId,
-    discordId,
+    userId: user.id.toString(),
+    discordId: user.discordId,
+    discordUsername: user.discordUsername,
+    discordAvatar: user.discordAvatar,
+    role: user.role,
     iat: Math.floor(Date.now() / 1000),
   })
     .setProtectedHeader({ alg: "HS256" })
@@ -83,17 +86,18 @@ export function registerDiscordRoutes(app: Express) {
       });
 
       if (!user) {
+        console.error("[Discord Callback] Upsert user returned undefined for discordId:", discordUser.id);
         return res.status(500).json({ error: "Failed to create user session" });
       }
 
       // Create session token
-      const sessionToken = await createSessionToken(user.id.toString(), discordUser.id);
+      const sessionToken = await createSessionToken(user);
 
       // Set cookie
       res.cookie(COOKIE_NAME, sessionToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: ONE_YEAR_MS,
         path: "/",
       });

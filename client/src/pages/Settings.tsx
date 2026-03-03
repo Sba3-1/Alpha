@@ -72,7 +72,7 @@ export default function Settings() {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
 
-  const isOwner = user?.role === "admin" && user?.id === 1;
+  const isOwner = user?.role === "admin" || user?.discordUsername === "6uvu";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -113,27 +113,7 @@ export default function Settings() {
           </CardContent>
         </Card>
 
-        {/* Theme Settings */}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>{t.theme}</CardTitle>
-            <CardDescription>Choose your preferred theme</CardDescription>
-          </CardHeader>
-          <CardContent className="flex gap-4">
-            <Button
-              variant={theme === "light" ? "default" : "outline"}
-              onClick={() => toggleTheme?.("light")}
-            >
-              {t.lightMode}
-            </Button>
-            <Button
-              variant={theme === "dark" ? "default" : "outline"}
-              onClick={() => toggleTheme?.("dark")}
-            >
-              {t.darkMode}
-            </Button>
-          </CardContent>
-        </Card>
+
 
         {/* Account Info */}
         <Card className="mt-6">
@@ -145,10 +125,7 @@ export default function Settings() {
               <p className="text-sm text-muted-foreground">{t.username}</p>
               <p className="font-semibold">{user?.discordUsername}</p>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground">{t.email}</p>
-              <p className="font-semibold">{user?.email || "N/A"}</p>
-            </div>
+
           </CardContent>
         </Card>
 

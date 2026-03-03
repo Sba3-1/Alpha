@@ -5,10 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
-import { Loader2, Plus, Trash2, Edit2 } from "lucide-react";
+import { Loader2, Plus, Trash2, Edit2, UserPlus, Shield, Bot, Users } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { useTheme } from "@/contexts/ThemeContext";
 import ProfileDropdown from "@/components/ProfileDropdown";
 import {
   Dialog,
@@ -18,76 +17,79 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 
 type Language = "ar" | "en";
 
 const translations = {
   ar: {
-    dashboard: "لوحة التحكم",
-    manageBot: "إدارة بوتات Discord",
+    dashboard: "لوحة التحكم للمشرف",
+    manageBots: "إدارة البوتات",
+    manageAdmins: "إدارة المشرفين",
     addBot: "إضافة بوت",
     editBot: "تعديل البوت",
-    addNewBot: "إضافة بوت جديد",
-    updateBotDetails: "تحديث تفاصيل البوت",
-    createBotListing: "إنشاء قائمة بوت جديدة",
     botName: "اسم البوت",
-    enterBotName: "أدخل اسم البوت",
     description: "الوصف",
-    describeBotName: "وصف البوت",
     type: "النوع",
-    typeExample: "مثال: الإشراف، الأداة، المرح",
-    price: "السعر (ريال سعودي)",
-    purchaseLink: "رابط الشراء/الدعوة",
-    createBot: "إنشاء البوت",
-    updateBot: "تحديث البوت",
+    price: "السعر (SAR)",
+    purchaseLink: "رابط الشراء",
+    botToken: "توكن البوت (Discord Token)",
+    assignTo: "تعيين لمستخدم (اختياري)",
+    none: "لا يوجد",
+    save: "حفظ",
     cancel: "إلغاء",
-    noBots: "لا توجد بوتات حالياً. أنشئ أول بوت لك!",
-    createFirstBot: "إنشاء أول بوت",
-    edit: "تعديل",
-    delete: "حذف",
-    deleteConfirm: "هل أنت متأكد من رغبتك في حذف هذا البوت؟",
+    deleteConfirm: "هل أنت متأكد من الحذف؟",
+    adminUsername: "اسم مستخدم ديسكورد",
+    promote: "ترقية لمشرف",
+    demote: "إزالة الإشراف",
     accessDenied: "تم رفض الوصول",
-    noPermission: "ليس لديك صلاحية للوصول إلى هذه الصفحة",
     home: "الرئيسية",
-    marketplace: "سوق البوتات",
+    marketplace: "المتجر",
+    imageUrl: "رابط الصورة",
+    soldOut: "نفذت الكمية",
+    available: "متوفر",
   },
   en: {
     dashboard: "Admin Dashboard",
-    manageBot: "Manage your Discord bots",
+    manageBots: "Manage Bots",
+    manageAdmins: "Manage Admins",
     addBot: "Add Bot",
     editBot: "Edit Bot",
-    addNewBot: "Add New Bot",
-    updateBotDetails: "Update bot details",
-    createBotListing: "Create a new bot listing",
     botName: "Bot Name",
-    enterBotName: "Enter bot name",
     description: "Description",
-    describeBotName: "Describe your bot",
     type: "Type",
-    typeExample: "e.g., Moderation, Utility, Fun",
     price: "Price (SAR)",
-    purchaseLink: "Purchase/Invite Link",
-    createBot: "Create Bot",
-    updateBot: "Update Bot",
+    purchaseLink: "Purchase Link",
+    botToken: "Bot Token (Discord Token)",
+    assignTo: "Assign to User (Optional)",
+    none: "None",
+    save: "Save",
     cancel: "Cancel",
-    noBots: "No bots yet. Create your first bot!",
-    createFirstBot: "Create First Bot",
-    edit: "Edit",
-    delete: "Delete",
-    deleteConfirm: "Are you sure you want to delete this bot?",
+    deleteConfirm: "Are you sure you want to delete?",
+    adminUsername: "Discord Username",
+    promote: "Promote to Admin",
+    demote: "Demote from Admin",
     accessDenied: "Access Denied",
-    noPermission: "You don't have permission to access this page.",
     home: "Home",
     marketplace: "Marketplace",
+    imageUrl: "Image URL",
+    soldOut: "Sold Out",
+    available: "Available",
   },
 };
 
 export default function AdminDashboard() {
   const { user, isAuthenticated } = useAuth();
-  const { theme } = useTheme();
   const [, navigate] = useLocation();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"bots" | "admins">("bots");
+  const [isBotDialogOpen, setIsBotDialogOpen] = useState(false);
   const [editingBot, setEditingBot] = useState<any>(null);
   const [language, setLanguage] = useState<Language>("en");
 
@@ -98,292 +100,281 @@ export default function AdminDashboard() {
 
   const t = translations[language];
 
-  // Form state
-  const [formData, setFormData] = useState({
+  const [botFormData, setBotFormData] = useState({
     name: "",
     description: "",
-    type: "",
+    type: "Moderation",
     price: "",
     purchaseLink: "",
+    imageUrl: "",
+    token: "",
+    userId: "none",
+    soldOut: 0,
   });
 
-  // Queries and mutations
-  const { data: bots, isLoading, refetch } = trpc.bots.list.useQuery();
+  const [adminUsername, setAdminUsername] = useState("");
+
+  const { data: bots, isLoading: botsLoading, refetch: refetchBots } = trpc.bots.list.useQuery();
+  const { data: admins, refetch: refetchAdmins } = trpc.admin.listAdmins.useQuery();
+  const { data: usersList } = trpc.admin.listUsers.useQuery();
+  
   const createBotMutation = trpc.bots.create.useMutation();
   const updateBotMutation = trpc.bots.update.useMutation();
   const deleteBotMutation = trpc.bots.delete.useMutation();
+  const promoteMutation = trpc.admin.promoteByUsername.useMutation();
+  const demoteMutation = trpc.admin.demoteFromAdmin.useMutation();
 
-  // Redirect if not authenticated or not admin
-  if (!isAuthenticated) {
-    navigate("/", { replace: true });
+  if (!isAuthenticated || (user?.role !== "admin" && user?.discordUsername !== "6uvu" && user?.discordUsername !== "5mcm")) {
+    if (isAuthenticated) return <div className="min-h-screen flex items-center justify-center dark text-foreground"><h1>{t.accessDenied}</h1></div>;
+    navigate("/login");
     return null;
   }
 
-  if (user?.role !== "admin") {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4 text-foreground">{t.accessDenied}</h2>
-          <p className="text-muted-foreground">{t.noPermission}</p>
-        </div>
-      </div>
-    );
-  }
-
-  const handleOpenDialog = (bot?: any) => {
+  const handleOpenBotDialog = (bot?: any) => {
     if (bot) {
       setEditingBot(bot);
-      setFormData({
+      setBotFormData({
         name: bot.name,
         description: bot.description || "",
         type: bot.type,
         price: (bot.price / 100).toString(),
         purchaseLink: bot.purchaseLink,
+        imageUrl: bot.imageUrl || "",
+        token: bot.token || "",
+        userId: bot.userId ? bot.userId.toString() : "none",
+        soldOut: bot.soldOut,
       });
     } else {
       setEditingBot(null);
-      setFormData({
+      setBotFormData({
         name: "",
         description: "",
-        type: "",
+        type: "Moderation",
         price: "",
         purchaseLink: "",
+        imageUrl: "",
+        token: "",
+        userId: "none",
+        soldOut: 0,
       });
     }
-    setIsDialogOpen(true);
+    setIsBotDialogOpen(true);
   };
 
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setEditingBot(null);
-    setFormData({
-      name: "",
-      description: "",
-      type: "",
-      price: "",
-      purchaseLink: "",
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleBotSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const price = Math.round(parseFloat(formData.price) * 100);
+      const price = Math.round(parseFloat(botFormData.price) * 100);
+      const payload = {
+        ...botFormData,
+        price,
+        userId: botFormData.userId === "none" ? undefined : parseInt(botFormData.userId),
+      };
 
       if (editingBot) {
-        await updateBotMutation.mutateAsync({
-          id: editingBot.id,
-          name: formData.name,
-          description: formData.description,
-          type: formData.type,
-          price,
-          purchaseLink: formData.purchaseLink,
-        });
-        toast.success("Bot updated successfully!");
+        await updateBotMutation.mutateAsync({ id: editingBot.id, ...payload });
+        toast.success("Bot updated!");
       } else {
-        await createBotMutation.mutateAsync({
-          name: formData.name,
-          description: formData.description,
-          type: formData.type,
-          price,
-          purchaseLink: formData.purchaseLink,
-        });
-        toast.success("Bot created successfully!");
+        await createBotMutation.mutateAsync(payload);
+        toast.success("Bot created!");
       }
-
-      handleCloseDialog();
-      refetch();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to save bot");
+      setIsBotDialogOpen(false);
+      refetchBots();
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
-  const handleDelete = async (botId: number) => {
+  const handleDeleteBot = async (id: number) => {
     if (!confirm(t.deleteConfirm)) return;
-
     try {
-      await deleteBotMutation.mutateAsync({ id: botId });
-      toast.success("Bot deleted successfully!");
-      refetch();
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete bot");
+      await deleteBotMutation.mutateAsync({ id });
+      toast.success("Bot deleted!");
+      refetchBots();
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="animate-spin w-8 h-8" />
-      </div>
-    );
-  }
+  const handlePromoteAdmin = async () => {
+    if (!adminUsername) return;
+    try {
+      await promoteMutation.mutateAsync({ username: adminUsername });
+      toast.success("Admin added!");
+      setAdminUsername("");
+      refetchAdmins();
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur">
+    <div className="min-h-screen dark text-foreground bg-background">
+      <header className="border-b border-border/50 sticky top-0 bg-background/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <span className="text-2xl font-bold text-foreground">ALPHA</span>
-            <nav className="flex items-center gap-6">
-              <a href="/" className="text-foreground hover:text-secondary transition-colors font-medium">
-                {t.home}
-              </a>
-              <a href="/marketplace" className="text-foreground hover:text-secondary transition-colors font-medium">
-                {t.marketplace}
-              </a>
+          <div className="flex items-center gap-8">
+            <span className="text-2xl font-bold tracking-tighter">ALPHA ADMIN</span>
+            <nav className="flex gap-6">
+              <button onClick={() => setActiveTab("bots")} className={`font-bold transition-colors ${activeTab === "bots" ? "text-cyan-400" : "text-muted-foreground hover:text-foreground"}`}>{t.manageBots}</button>
+              <button onClick={() => setActiveTab("admins")} className={`font-bold transition-colors ${activeTab === "admins" ? "text-cyan-400" : "text-muted-foreground hover:text-foreground"}`}>{t.manageAdmins}</button>
             </nav>
           </div>
-          <ProfileDropdown />
+          <div className="flex items-center gap-4">
+            <a href="/" className="text-sm font-bold hover:text-cyan-400 transition-colors">{t.home}</a>
+            <ProfileDropdown />
+          </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-4xl font-bold mb-2 text-foreground">{t.dashboard}</h1>
-            <p className="text-muted-foreground">{t.manageBot}</p>
-          </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()} className="gap-2">
-                <Plus className="w-4 h-4" />
-                {t.addBot}
+      <main className="container mx-auto px-4 py-12">
+        {activeTab === "bots" ? (
+          <div className="space-y-8">
+            <div className="flex justify-between items-center">
+              <h1 className="text-4xl font-bold tracking-tighter flex items-center gap-3">
+                <Bot className="w-10 h-10 text-cyan-400" />
+                {t.manageBots}
+              </h1>
+              <Button onClick={() => handleOpenBotDialog()} className="bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl gap-2">
+                <Plus className="w-4 h-4" /> {t.addBot}
               </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle>{editingBot ? t.editBot : t.addNewBot}</DialogTitle>
-                <DialogDescription>
-                  {editingBot ? t.updateBotDetails : t.createBotListing}
-                </DialogDescription>
-              </DialogHeader>
+            </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Label htmlFor="name">{t.botName}</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder={t.enterBotName}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="description">{t.description}</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder={t.describeBotName}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="type">{t.type}</Label>
-                  <Input
-                    id="type"
-                    value={formData.type}
-                    onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                    placeholder={t.typeExample}
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="price">{t.price}</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    step="0.01"
-                    value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    placeholder="0.00"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="purchaseLink">{t.purchaseLink}</Label>
-                  <Input
-                    id="purchaseLink"
-                    type="url"
-                    value={formData.purchaseLink}
-                    onChange={(e) => setFormData({ ...formData, purchaseLink: e.target.value })}
-                    placeholder="https://..."
-                    required
-                  />
-                </div>
-
-                <div className="flex gap-2 pt-4">
-                  <Button type="submit" className="flex-1">
-                    {editingBot ? t.updateBot : t.createBot}
-                  </Button>
-                  <Button type="button" variant="outline" onClick={handleCloseDialog} className="flex-1">
-                    {t.cancel}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {!bots || bots.length === 0 ? (
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <p className="text-muted-foreground mb-4">{t.noBots}</p>
-              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button onClick={() => handleOpenDialog()}>{t.createFirstBot}</Button>
-                </DialogTrigger>
-              </Dialog>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid gap-4">
-            {bots.map((bot) => (
-              <Card key={bot.id}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <CardTitle className="text-foreground">{bot.name}</CardTitle>
-                      <CardDescription>{bot.type}</CardDescription>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {bots?.map(bot => (
+                <Card key={bot.id} className="bg-card/40 border-border/50 rounded-2xl overflow-hidden hover:border-cyan-400/30 transition-all">
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between">
+                      <CardTitle className="text-xl font-bold">{bot.name}</CardTitle>
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="icon" onClick={() => handleOpenBotDialog(bot)} className="h-8 w-8 text-muted-foreground hover:text-cyan-400">
+                          <Edit2 className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => handleDeleteBot(bot.id)} className="h-8 w-8 text-muted-foreground hover:text-red-400">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="text-2xl font-bold text-secondary">{(bot.price / 100).toFixed(2)} SAR</div>
+                    <CardDescription>{bot.type}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-sm text-muted-foreground line-clamp-2">{bot.description}</p>
+                      <div className="pt-4 border-t border-border/50 flex justify-between items-center">
+                        <span className="text-cyan-400 font-bold">{(bot.price / 100).toFixed(2)} SAR</span>
+                        <span className="text-xs text-muted-foreground">Owner ID: {bot.userId || "None"}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="max-w-4xl mx-auto space-y-8">
+            <h1 className="text-4xl font-bold tracking-tighter flex items-center gap-3">
+              <Shield className="w-10 h-10 text-cyan-400" />
+              {t.manageAdmins}
+            </h1>
+            
+            <Card className="bg-card/40 border-border/50 rounded-3xl p-8">
+              <div className="flex gap-4 mb-8">
+                <div className="flex-1">
+                  <Label className="font-bold mb-2 block">{t.adminUsername}</Label>
+                  <Input value={adminUsername} onChange={(e) => setAdminUsername(e.target.value)} placeholder="e.g. username" className="bg-muted/30 border-none rounded-xl" />
+                </div>
+                <Button onClick={handlePromoteAdmin} className="mt-auto bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl gap-2">
+                  <UserPlus className="w-4 h-4" /> {t.promote}
+                </Button>
+              </div>
+
+              <div className="space-y-4">
+                {admins?.map(admin => (
+                  <div key={admin.id} className="flex justify-between items-center p-4 bg-muted/20 rounded-2xl border border-border/30">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-cyan-400/20 rounded-full flex items-center justify-center font-bold text-cyan-400">
+                        {admin.discordUsername?.[0].toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="font-bold">@{admin.discordUsername}</p>
+                        <p className="text-xs text-muted-foreground">ID: {admin.id}</p>
+                      </div>
+                    </div>
+                    {admin.discordUsername !== "6uvu" && (
+                      <Button variant="ghost" size="sm" onClick={async () => {
+                        try {
+                          await demoteMutation.mutateAsync({ userId: admin.id });
+                          toast.success("Admin demoted!");
+                          refetchAdmins();
+                        } catch (err: any) { toast.error(err.message); }
+                      }} className="text-red-400 hover:bg-red-500/10 rounded-xl">{t.demote}</Button>
+                    )}
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{bot.description}</p>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleOpenDialog(bot)}
-                      className="gap-2"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                      {t.edit}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(bot.id)}
-                      className="gap-2"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      {t.delete}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                ))}
+              </div>
+            </Card>
           </div>
         )}
-      </div>
+      </main>
+
+      <Dialog open={isBotDialogOpen} onOpenChange={setIsBotDialogOpen}>
+        <DialogContent className="max-w-2xl bg-card border-border rounded-3xl p-8 max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">{editingBot ? t.editBot : t.addBot}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleBotSubmit} className="space-y-6 mt-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="font-bold">{t.botName}</Label>
+                <Input value={botFormData.name} onChange={e => setBotFormData({...botFormData, name: e.target.value})} className="bg-muted/30 border-none rounded-xl" required />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-bold">{t.type}</Label>
+                <Input value={botFormData.type} onChange={e => setBotFormData({...botFormData, type: e.target.value})} className="bg-muted/30 border-none rounded-xl" required />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label className="font-bold">{t.description}</Label>
+              <Textarea value={botFormData.description} onChange={e => setBotFormData({...botFormData, description: e.target.value})} className="bg-muted/30 border-none rounded-xl min-h-[100px]" required />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="font-bold">{t.price}</Label>
+                <Input type="number" value={botFormData.price} onChange={e => setBotFormData({...botFormData, price: e.target.value})} className="bg-muted/30 border-none rounded-xl" required />
+              </div>
+              <div className="space-y-2">
+                <Label className="font-bold">{t.purchaseLink}</Label>
+                <Input value={botFormData.purchaseLink} onChange={e => setBotFormData({...botFormData, purchaseLink: e.target.value})} className="bg-muted/30 border-none rounded-xl" required />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label className="font-bold">{t.imageUrl}</Label>
+              <Input value={botFormData.imageUrl} onChange={e => setBotFormData({...botFormData, imageUrl: e.target.value})} className="bg-muted/30 border-none rounded-xl" />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-bold text-cyan-400">{t.botToken}</Label>
+              <Input value={botFormData.token} onChange={e => setBotFormData({...botFormData, token: e.target.value})} className="bg-cyan-400/10 border-cyan-400/30 rounded-xl focus:border-cyan-400" placeholder="MTAx..." />
+            </div>
+            <div className="space-y-2">
+              <Label className="font-bold">{t.assignTo}</Label>
+              <Select value={botFormData.userId} onValueChange={val => setBotFormData({...botFormData, userId: val})}>
+                <SelectTrigger className="bg-muted/30 border-none rounded-xl">
+                  <SelectValue placeholder={t.none} />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border rounded-xl">
+                  <SelectItem value="none">{t.none}</SelectItem>
+                  {usersList?.map(u => (
+                    <SelectItem key={u.id} value={u.id.toString()}>@{u.discordUsername} ({u.id})</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex gap-4 pt-4">
+              <Button type="button" variant="ghost" onClick={() => setIsBotDialogOpen(false)} className="flex-1 rounded-xl font-bold">{t.cancel}</Button>
+              <Button type="submit" className="flex-1 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl">{t.save}</Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
