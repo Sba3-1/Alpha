@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
     <footer className="w-full py-8 mt-auto border-t border-border/50 bg-background/95 backdrop-blur">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center gap-4">
         <a 
-          href="https://image2url.com/r2/default/documents/1772538544016-d43aa3aa-0d5d-4cd5-9483-5b076a97e8ac.pdf" 
+          href="https://freelance.sa/certificate-validation/certificate-validation-details/FL-203169945" 
           target="_blank" 
           rel="noopener noreferrer"
           className="transition-transform hover:scale-105 flex flex-col items-center gap-2"
