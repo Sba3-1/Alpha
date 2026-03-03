@@ -39,10 +39,8 @@ const translations = {
     description: "الوصف",
     type: "النوع",
     price: "السعر (SAR)",
-    purchaseLink: "رابط الشراء",
     inviteLink: "رابط الانفايت",
-    botToken: "توكن البوت (Discord Token)",
-    assignTo: "تعيين لمستخدم (اختياري)",
+    assignTo: "تعيين لمستخدم",
     none: "لا يوجد",
     save: "حفظ",
     cancel: "إلغاء",
@@ -53,7 +51,6 @@ const translations = {
     accessDenied: "تم رفض الوصول",
     home: "الرئيسية",
     marketplace: "المتجر",
-    imageUrl: "رابط الصورة",
     profileImage: "صورة البروفايل",
     soldOut: "نفذت الكمية",
     available: "متوفر",
@@ -68,10 +65,8 @@ const translations = {
     description: "Description",
     type: "Type",
     price: "Price (SAR)",
-    purchaseLink: "Purchase Link",
     inviteLink: "Invite Link",
-    botToken: "Bot Token (Discord Token)",
-    assignTo: "Assign to User (Optional)",
+    assignTo: "Assign to User",
     none: "None",
     save: "Save",
     cancel: "Cancel",
@@ -82,7 +77,6 @@ const translations = {
     accessDenied: "Access Denied",
     home: "Home",
     marketplace: "Marketplace",
-    imageUrl: "Image URL",
     profileImage: "Profile Image",
     soldOut: "Sold Out",
     available: "Available",
@@ -109,11 +103,8 @@ export default function AdminDashboard() {
     description: "",
     type: "Moderation",
     price: "",
-    purchaseLink: "",
     inviteLink: "",
     imageUrl: "",
-    token: "",
-    userId: "none",
     soldOut: 0,
   });
 
@@ -143,11 +134,8 @@ export default function AdminDashboard() {
         description: bot.description || "",
         type: bot.type,
         price: (bot.price / 100).toString(),
-        purchaseLink: bot.purchaseLink,
         inviteLink: bot.inviteLink || "",
         imageUrl: bot.imageUrl || "",
-        token: bot.token || "",
-        userId: bot.userId ? bot.userId.toString() : "none",
         soldOut: bot.soldOut,
       });
     } else {
@@ -157,11 +145,8 @@ export default function AdminDashboard() {
         description: "",
         type: "Moderation",
         price: "",
-        purchaseLink: "",
         inviteLink: "",
         imageUrl: "",
-        token: "",
-        userId: "none",
         soldOut: 0,
       });
     }
@@ -175,7 +160,6 @@ export default function AdminDashboard() {
       const payload = {
         ...botFormData,
         price,
-        userId: botFormData.userId === "none" ? undefined : parseInt(botFormData.userId),
       };
 
       if (editingBot) {
@@ -266,9 +250,8 @@ export default function AdminDashboard() {
                   <CardContent>
                     <div className="space-y-4">
                       <p className="text-sm text-muted-foreground line-clamp-2">{bot.description}</p>
-                      <div className="pt-4 border-t border-border/50 flex justify-between items-center">
+                      <div className="pt-4 border-t border-border/50">
                         <span className="text-cyan-400 font-bold">{(bot.price / 100).toFixed(2)} SAR</span>
-                        <span className="text-xs text-muted-foreground">Owner ID: {bot.userId || "None"}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -297,12 +280,12 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 {admins?.map(admin => (
                   <div key={admin.id} className="flex justify-between items-center p-4 bg-muted/20 rounded-2xl border border-border/30">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-cyan-400/20 rounded-full flex items-center justify-center font-bold text-cyan-400">
-                        {admin.discordUsername?.[0].toUpperCase()}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                        <span className="text-cyan-400 font-bold text-sm">@</span>
                       </div>
                       <div>
-                        <p className="font-bold">@{admin.discordUsername}</p>
+                        <p className="font-bold text-foreground">@{admin.discordUsername}</p>
                         <p className="text-xs text-muted-foreground">ID: {admin.id}</p>
                       </div>
                     </div>
@@ -349,36 +332,15 @@ export default function AdminDashboard() {
                 <Input type="number" value={botFormData.price} onChange={e => setBotFormData({...botFormData, price: e.target.value})} className="bg-muted/30 border-none rounded-xl" required />
               </div>
               <div className="space-y-2">
-                <Label className="font-bold">{t.purchaseLink}</Label>
-                <Input value={botFormData.purchaseLink} onChange={e => setBotFormData({...botFormData, purchaseLink: e.target.value})} className="bg-muted/30 border-none rounded-xl" required />
+                <Label className="font-bold">{t.inviteLink}</Label>
+                <Input value={botFormData.inviteLink} onChange={e => setBotFormData({...botFormData, inviteLink: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder="https://discord.com/api/oauth2/authorize?..." required />
               </div>
-            </div>
-            <div className="space-y-2">
-              <Label className="font-bold">{t.inviteLink}</Label>
-              <Input value={botFormData.inviteLink} onChange={e => setBotFormData({...botFormData, inviteLink: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder="https://discord.com/api/oauth2/authorize?..." />
             </div>
             <div className="space-y-2">
               <Label className="font-bold">{t.profileImage}</Label>
               <Input value={botFormData.imageUrl} onChange={e => setBotFormData({...botFormData, imageUrl: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder="https://example.com/bot-image.png" />
             </div>
-            <div className="space-y-2">
-              <Label className="font-bold text-cyan-400">{t.botToken}</Label>
-              <Input value={botFormData.token} onChange={e => setBotFormData({...botFormData, token: e.target.value})} className="bg-cyan-400/10 border-cyan-400/30 rounded-xl focus:border-cyan-400" placeholder="MTAx..." />
-            </div>
-            <div className="space-y-2">
-              <Label className="font-bold">{t.assignTo}</Label>
-              <Select value={botFormData.userId} onValueChange={val => setBotFormData({...botFormData, userId: val})}>
-                <SelectTrigger className="bg-muted/30 border-none rounded-xl">
-                  <SelectValue placeholder={t.none} />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border rounded-xl">
-                  <SelectItem value="none">{t.none}</SelectItem>
-                  {usersList?.map(u => (
-                    <SelectItem key={u.id} value={u.id.toString()}>@{u.discordUsername} ({u.id})</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+
             <div className="flex gap-4 pt-4">
               <Button type="button" variant="ghost" onClick={() => setIsBotDialogOpen(false)} className="flex-1 rounded-xl font-bold">{t.cancel}</Button>
               <Button type="submit" className="flex-1 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl">{t.save}</Button>

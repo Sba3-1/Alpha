@@ -56,11 +56,9 @@ export const appRouter = router({
         description: z.string().min(1, "Description is required"),
         type: z.string().min(1, "Type is required"),
         price: z.number().int().min(0, "Price must be positive"),
-        purchaseLink: z.string().url("Invalid purchase link"),
-        inviteLink: z.string().url().optional().or(z.literal("")),
+        inviteLink: z.string().url("Invalid invite link"),
         imageUrl: z.string().url().optional().or(z.literal("")),
         soldOut: z.number().int().min(0).max(1).default(0),
-        token: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
         return await createBot({
@@ -77,12 +75,9 @@ export const appRouter = router({
         description: z.string().min(1).optional(),
         type: z.string().min(1).optional(),
         price: z.number().int().min(0).optional(),
-        purchaseLink: z.string().url().optional(),
-        inviteLink: z.string().url().optional().or(z.literal("")),
+        inviteLink: z.string().url().optional(),
         imageUrl: z.string().url().optional().or(z.literal("")),
         soldOut: z.number().int().min(0).max(1).optional(),
-        token: z.string().optional(),
-        userId: z.number().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
         const bot = await getBotById(input.id);
