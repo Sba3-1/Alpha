@@ -66,7 +66,7 @@ export default function BotManagement() {
     return null;
   }
 
-  const handleToggleStatus = async (botId: number, currentStatus: string, botName: string) => {
+  const handleToggleStatus = async (botId: number, currentStatus: string, botName: string, botPath: string) => {
     const action = currentStatus === "running" ? "stop" : "start";
     try {
       // أولاً: تحديث الحالة في قاعدة البيانات
@@ -77,7 +77,7 @@ export default function BotManagement() {
       const response = await fetch(bridgeUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ botName }),
+        body: JSON.stringify({ botName, botPath }),
       });
       
       if (!response.ok) {
@@ -159,7 +159,7 @@ export default function BotManagement() {
                   </p>
                   <div className="flex gap-3">
                     <Button 
-                      onClick={() => handleToggleStatus(bot.id, bot.status, bot.name)}
+                      onClick={() => handleToggleStatus(bot.id, bot.status, bot.name, bot.botPath)}
                       disabled={toggleStatusMutation.isPending}
                       className={`flex-1 gap-2 font-bold rounded-xl ${
                         bot.status === 'running' 

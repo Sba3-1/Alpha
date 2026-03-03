@@ -52,6 +52,8 @@ const translations = {
     home: "الرئيسية",
     marketplace: "المتجر",
     profileImage: "صورة البروفايل",
+    botPath: "مسار البوت في الخادم",
+    botPathPlaceholder: "مثال: C:\\Users\\Administrator\\Desktop\\red line",
     soldOut: "نفذت الكمية",
     available: "متوفر",
   },
@@ -78,6 +80,8 @@ const translations = {
     home: "Home",
     marketplace: "Marketplace",
     profileImage: "Profile Image",
+    botPath: "Bot Path on Server",
+    botPathPlaceholder: "Example: C:\\Users\\Administrator\\Desktop\\red line",
     soldOut: "Sold Out",
     available: "Available",
   },
@@ -104,6 +108,7 @@ export default function AdminDashboard() {
     type: "Moderation",
     price: "",
     inviteLink: "",
+    botPath: "",
     imageUrl: "",
     soldOut: 0,
   });
@@ -135,6 +140,7 @@ export default function AdminDashboard() {
         type: bot.type,
         price: (bot.price / 100).toString(),
         inviteLink: bot.inviteLink || "",
+        botPath: bot.botPath || "",
         imageUrl: bot.imageUrl || "",
         soldOut: bot.soldOut,
       });
@@ -146,6 +152,7 @@ export default function AdminDashboard() {
         type: "Moderation",
         price: "",
         inviteLink: "",
+        botPath: "",
         imageUrl: "",
         soldOut: 0,
       });
@@ -335,6 +342,10 @@ export default function AdminDashboard() {
                 <Label className="font-bold">{t.inviteLink}</Label>
                 <Input value={botFormData.inviteLink} onChange={e => setBotFormData({...botFormData, inviteLink: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder="https://discord.com/api/oauth2/authorize?..." required />
               </div>
+            </div>
+            <div className="space-y-2">
+              <Label className="font-bold">{t.botPath}</Label>
+              <Input value={botFormData.botPath} onChange={e => setBotFormData({...botFormData, botPath: e.target.value})} className="bg-muted/30 border-none rounded-xl" placeholder={t.botPathPlaceholder} required />
             </div>
             <div className="space-y-2">
               <Label className="font-bold">{t.profileImage}</Label>

@@ -57,6 +57,7 @@ export const appRouter = router({
         type: z.string().min(1, "Type is required"),
         price: z.number().int().min(0, "Price must be positive"),
         inviteLink: z.string().url("Invalid invite link"),
+        botPath: z.string().min(1, "Bot path is required"),
         imageUrl: z.string().url().optional().or(z.literal("")),
         soldOut: z.number().int().min(0).max(1).default(0),
       }))
@@ -76,6 +77,7 @@ export const appRouter = router({
         type: z.string().min(1).optional(),
         price: z.number().int().min(0).optional(),
         inviteLink: z.string().url().optional(),
+        botPath: z.string().min(1).optional(),
         imageUrl: z.string().url().optional().or(z.literal("")),
         soldOut: z.number().int().min(0).max(1).optional(),
       }))

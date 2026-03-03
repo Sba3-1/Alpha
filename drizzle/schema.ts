@@ -45,6 +45,7 @@ export const bots = pgTable("bots", {
   adminId: integer("adminId").notNull(), // Reference to users table
   token: text("token"), // Bot token for starting/stopping
   userId: integer("userId"), // ID of the user who purchased the bot
+  botPath: text("botPath"), // Full path to the bot folder on the server (e.g., C:\Users\Administrator\Desktop\red line)
   status: varchar("status", { length: 20 }).default("stopped").notNull(), // "running" or "stopped"
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
