@@ -69,31 +69,13 @@ export default function BotManagement() {
   const handleToggleStatus = async (botId: number, currentStatus: string, botName: string, botPath: string) => {
     const action = currentStatus === "running" ? "stop" : "start";
     try {
-      // أولاً: تحديث الحالة في قاعدة البيانات
+      // إرسال الأمر إلى الـ API الخاص بالموقع (الـ Backend سيتولى إرسال الطلب لخادم الجسر)
+      console.log(`[BotManagement] Sending ${action} request to API`);
+      
       await toggleStatusMutation.mutateAsync({ id: botId, action });
       
-      // ثانياً: إرسال الأمر إلى خادم الجسر (Bridge API) على الخادم الحقيقي
-      const bridgeUrl = `http://82.22.62.101:8080/${action}`;
-      const payload = { botName, botPath };
-      
-      console.log(`[BotManagement] Sending ${action} request to Bridge API:`, { url: bridgeUrl, payload });
-      
-      try {
-        const response = await fetch(bridgeUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-          mode: "no-cors",
-        });
-        
-        console.log(`[BotManagement] Bridge API request sent (no-cors mode)`);
-        toast.success(`Bot ${action === "start" ? "started" : "stopped"} successfully!`);
-        refetch();
-      } catch (fetchError) {
-        console.warn(`[BotManagement] Fetch error (might be network):`, fetchError);
-        toast.success(`Bot ${action === "start" ? "started" : "stopped"} successfully!`);
-        refetch();
-      }
+      toast.success(`Bot ${action === "start" ? "started" : "stopped"} successfully!`);
+      refetch();
     } catch (error: any) {
       console.error(`[BotManagement] Error:`, error);
       toast.error(error.message || "Failed to update bot status");

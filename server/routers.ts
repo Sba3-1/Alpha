@@ -118,6 +118,26 @@ export const appRouter = router({
         const newStatus = input.action === "start" ? "running" : "stopped";
         await updateBotStatus(input.id, newStatus);
         
+        // Send command to Bridge API on the server
+        try {
+          const bridgeUrl = `http://82.22.62.101:8080/${input.action}`;
+          const payload = { botName: bot.name, botPath: bot.botPath };
+          
+          const response = await fetch(bridgeUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          
+          if (!response.ok) {
+            console.error(`[Bridge API] Error: ${response.statusText}`);
+          } else {
+            console.log(`[Bridge API] ${input.action} command sent for bot: ${bot.name}`);
+          }
+        } catch (error) {
+          console.error(`[Bridge API] Connection error:`, error);
+        }
+        
         return { success: true, status: newStatus };
       }),
 
