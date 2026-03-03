@@ -62,7 +62,8 @@ async function ensureTablesExist(db: any) {
         "description" TEXT,
         "type" VARCHAR(100) NOT NULL,
         "price" INTEGER NOT NULL,
-        "purchaseLink" TEXT NOT NULL,
+        "purchaseLink" TEXT,
+        "inviteLink" TEXT,
         "imageUrl" TEXT,
         "soldOut" INTEGER DEFAULT 0 NOT NULL,
         "adminId" INTEGER NOT NULL,
@@ -81,6 +82,9 @@ async function ensureTablesExist(db: any) {
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "token" TEXT;`);
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "userId" INTEGER;`);
       await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "status" VARCHAR(20) DEFAULT 'stopped' NOT NULL;`);
+      await db.execute(sql`ALTER TABLE "bots" ADD COLUMN IF NOT EXISTS "inviteLink" TEXT;`);
+      // Make purchaseLink nullable if it isn't already
+      await db.execute(sql`ALTER TABLE "bots" ALTER COLUMN "purchaseLink" DROP NOT NULL;`);
     } catch (e) {
       console.log("[Database] Columns already exist or error adding them.");
     }
