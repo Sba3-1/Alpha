@@ -85,15 +85,7 @@ export default function ProfileDropdown() {
           </DropdownMenuItem>
         )}
 
-        {isAdmin && (
-          <DropdownMenuItem
-            onClick={() => navigate("/admin")}
-            className="cursor-pointer rounded-xl focus:bg-accent focus:text-accent-foreground py-2.5"
-          >
-            <Shield className="mr-3 h-4 w-4 text-cyan-400" />
-            <span className="font-medium">{t.admin}</span>
-          </DropdownMenuItem>
-        )}
+
 
         <DropdownMenuItem
           onClick={() => navigate("/settings")}

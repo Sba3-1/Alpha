@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import Footer from "./components/Footer";
 import BotManagement from "./pages/BotManagement";
 import UserDashboard from "./pages/UserDashboard";
+import FreelanceCertificate from "./pages/FreelanceCertificate";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
       <Route path={"/settings"} component={Settings} />
       <Route path={"/bot-management"} component={BotManagement} />
       <Route path={"/dashboard"} component={UserDashboard} />
+      <Route path={"/certificate"} component={FreelanceCertificate} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
