@@ -6,6 +6,8 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { getAllBots, getBotById, createBot, updateBot, deleteBot } from "./db";
 import { promoteToAdmin, demoteFromAdmin, getAllAdmins } from "./admin";
+import { getUserBots, createUserBot, updateUserBotStatus, getBotToken, createBotToken, updateBotToken } from "./db-bots";
+import { encryptToken, decryptToken, maskToken } from "./encryption";
 
 // Admin-only procedure
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -99,6 +101,129 @@ export const appRouter = router({
   }),
 
   // Admin management procedures
+
+  // User bots management (owned bots)
+  userBots: router({
+    // Get user's owned bots
+    list: protectedProcedure.query(async ({ ctx }) => {
+      return await getUserBots(ctx.user.id);
+    }),
+
+    // Purchase a bot
+    purchase: protectedProcedure
+      .input(z.object({ botId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const bot = await getBotById(input.botId);
+          if (!bot) {
+            throw new TRPCError({ code: 'NOT_FOUND', message: 'Bot not found' });
+          }
+
+          const userBots = await getUserBots(ctx.user.id);
+          const alreadyOwns = userBots.some((ub) => ub.botId === input.botId);
+          if (alreadyOwns) {
+            throw new TRPCError({ code: 'BAD_REQUEST', message: 'You already own this bot' });
+          }
+
+          const newUserBot = await createUserBot({
+            userId: ctx.user.id,
+            botId: input.botId,
+            status: 'running',
+          });
+
+          return newUserBot;
+        } catch (error: any) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
+        }
+      }),
+
+    // Set bot token
+    setToken: protectedProcedure
+      .input(z.object({
+        userBotId: z.number(),
+        token: z.string().min(1),
+        discordBotId: z.string().min(1),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const userBot = await getUserBots(ctx.user.id);
+          const ownedBot = userBot.find((ub) => ub.id === input.userBotId);
+          if (!ownedBot) {
+            throw new TRPCError({ code: 'FORBIDDEN', message: 'Bot not found or not owned by user' });
+          }
+
+          const encryptedToken = encryptToken(input.token);
+          const existingToken = await getBotToken(input.userBotId);
+          let result;
+
+          if (existingToken) {
+            result = await updateBotToken(input.userBotId, encryptedToken, input.discordBotId);
+          } else {
+            result = await createBotToken({
+              userBotId: input.userBotId,
+              encryptedToken,
+              discordBotId: input.discordBotId,
+            });
+          }
+
+          return {
+            success: true,
+            message: 'Token saved successfully',
+            maskedToken: maskToken(input.token),
+          };
+        } catch (error: any) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
+        }
+      }),
+
+    // Get bot token
+    getToken: protectedProcedure
+      .input(z.object({ userBotId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        try {
+          const userBot = await getUserBots(ctx.user.id);
+          const ownedBot = userBot.find((ub) => ub.id === input.userBotId);
+          if (!ownedBot) {
+            throw new TRPCError({ code: 'FORBIDDEN', message: 'Bot not found or not owned by user' });
+          }
+
+          const token = await getBotToken(input.userBotId);
+          if (!token) {
+            return null;
+          }
+
+          const decryptedToken = decryptToken(token.encryptedToken);
+          return {
+            ...token,
+            decryptedToken,
+            maskedToken: maskToken(decryptedToken),
+          };
+        } catch (error: any) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
+        }
+      }),
+
+    // Update bot status
+    updateStatus: protectedProcedure
+      .input(z.object({
+        userBotId: z.number(),
+        status: z.enum(['running', 'stopped']),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const userBot = await getUserBots(ctx.user.id);
+          const ownedBot = userBot.find((ub) => ub.id === input.userBotId);
+          if (!ownedBot) {
+            throw new TRPCError({ code: 'FORBIDDEN', message: 'Bot not found or not owned by user' });
+          }
+
+          const updated = await updateUserBotStatus(input.userBotId, input.status);
+          return updated;
+        } catch (error: any) {
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
+        }
+      }),
+  }),
   admin: router({
     // Get all admins (public)
     listAdmins: publicProcedure.query(async () => {

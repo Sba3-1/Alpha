@@ -100,3 +100,20 @@
 - [x] Add Discord logo and username in header
 - [x] Improve animated background (more smooth and comfortable)
 - [x] Remove statistics/analytics section from pages
+
+
+## Phase 3: Bot Management & User Dashboard (NEW)
+- [ ] Add `user_bots` table to track bot ownership
+- [ ] Add `bot_tokens` table for encrypted bot tokens
+- [ ] Add `status` field to bots table (running/stopped)
+- [ ] Add `purchaseDate` field to user_bots table
+- [ ] Create admin bot management page (/admin/bots-management)
+- [ ] Add bot token input field with encryption
+- [ ] Add dropdown to link bot with marketplace bot
+- [ ] Create user dashboard page (/dashboard)
+- [ ] Add statistics section (total bots, active bots)
+- [ ] Display owned bots list with status indicators
+- [ ] Add Start/Stop buttons for bot control
+- [ ] Implement Discord API integration for bot control
+- [ ] Add bot control endpoints (start/stop)
+- [ ] Test bot start/stop functionality
