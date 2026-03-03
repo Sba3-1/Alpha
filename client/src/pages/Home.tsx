@@ -151,39 +151,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Features Grid */}
-          <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: t.precision,
-                description: t.precisionDesc,
-                icon: "⚙️",
-              },
-              {
-                title: t.secure,
-                description: t.secureDesc,
-                icon: "🔐",
-              },
-              {
-                title: t.scalable,
-                description: t.scalableDesc,
-                icon: "📈",
-              },
-            ].map((feature, idx) => (
-              <div
-                key={idx}
-                className="p-8 border border-border/50 rounded-[2rem] bg-card/20 hover:border-cyan-400/30 transition-all group"
-              >
-                <div className="text-4xl mb-6 group-hover:scale-110 transition-transform">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-foreground tracking-tight">
-                  {feature.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
+
         </div>
       </section>
 
