@@ -157,8 +157,8 @@ export default function Home() {
       <section className="py-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <div className="mb-8 flex justify-center">
-              <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-32 h-32" />
+            <div className="mb-12 flex justify-center">
+              <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-48 h-48 drop-shadow-[0_0_30px_rgba(0,163,255,0.4)] hover:scale-110 transition-transform duration-500" />
             </div>
 
             <div className="relative mb-12 min-h-[180px] flex flex-col items-center justify-center overflow-hidden">
