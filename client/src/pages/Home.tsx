@@ -103,6 +103,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-transparent">
+      <div className="grid-scanner"></div>
       <div 
         className="grid-glow" 
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
