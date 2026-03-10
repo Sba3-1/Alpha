@@ -108,25 +108,25 @@ export default function Home() {
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
       {/* Navigation Header - Centered Floating */}
-      <header className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 pt-2">
-        <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-8 py-4 flex items-center justify-between gap-12">
+      <header className="fixed top-1 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-5 flex items-center justify-between gap-16">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
             <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-10 h-10" />
-            <span className="text-xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
+            <span className="text-2xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
           {/* Center - Menu */}
           <nav className="flex items-center gap-6">
             <Link href="/marketplace">
-              <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors cursor-pointer">
+              <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors cursor-pointer">
                 {t.marketplace}
               </span>
             </Link>
 
             {isAuthenticated && hasBots && (
               <Link href="/dashboard">
-                <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
                   <LayoutDashboard className="w-4 h-4" />
                   {t.dashboard}
                 </span>
@@ -135,7 +135,7 @@ export default function Home() {
 
             {isAuthenticated && isAdmin && (
               <Link href="/admin">
-                <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
                   <Settings className="w-4 h-4" />
                   {t.admin}
                 </span>
@@ -148,7 +148,7 @@ export default function Home() {
             <ProfileDropdown />
           ) : (
             <Link href="/login">
-              <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-lg px-6 py-2 text-sm">
+              <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-lg px-8 py-3 text-base">
                 {t.signIn}
               </Button>
             </Link>
