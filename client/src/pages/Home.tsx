@@ -170,38 +170,44 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-6 mt-8">
+            <div className="flex flex-col items-center gap-6 mt-12 mb-24">
               <Link href="/marketplace">
-                <Button size="lg" className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-2xl px-12 py-8 text-xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all hover:scale-105">
-                  {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
-                  <Zap className="w-6 h-6 fill-current" />
+                <Button size="lg" className="gap-3 bg-cyan-400 hover:bg-cyan-500 text-black font-black rounded-2xl px-14 py-9 text-2xl shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_60px_rgba(34,211,238,0.6)]">
+                  <ShoppingCart className="w-8 h-8" />
+                  {language === 'ar' ? 'تصفح الروبوتات' : 'Browse Bots'}
                 </Button>
               </Link>
-              <button className="flex flex-col items-center gap-2 text-muted-foreground hover:text-white transition-colors animate-bounce mt-8">
-                <span className="text-sm font-bold uppercase tracking-widest">{language === 'ar' ? 'استكشف المزيد' : 'Explore More'}</span>
-                <ChevronDown className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="flex gap-4 justify-center flex-wrap mt-12 mb-24">
-              <Link href="/marketplace">
-                <Button size="lg" className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-2xl px-10 py-8 text-xl shadow-[0_0_30px_rgba(34,211,238,0.2)]">
-                  <ShoppingCart className="w-6 h-6" />
-                  {t.browseBot}
-                </Button>
-              </Link>
-
-              {!isAuthenticated && (
-                <Link href="/login">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="rounded-2xl px-10 py-8 text-xl border-border/50 hover:bg-muted/50"
-                  >
-                    {t.signInDiscord}
-                  </Button>
-                </Link>
-              )}
+              
+              <div className="flex gap-4 mt-4">
+                {isAuthenticated ? (
+                  <>
+                    <Link href="/dashboard">
+                      <Button size="lg" variant="outline" className="gap-2 border-white/10 hover:bg-white/5 text-white font-bold rounded-2xl px-8 py-6 text-lg">
+                        <LayoutDashboard className="w-5 h-5" />
+                        {t.dashboard}
+                      </Button>
+                    </Link>
+                    {isAdmin && (
+                      <Link href="/admin">
+                        <Button size="lg" variant="outline" className="gap-2 border-cyan-400/20 hover:bg-cyan-400/5 text-cyan-400 font-bold rounded-2xl px-8 py-6 text-lg">
+                          <Settings className="w-5 h-5" />
+                          {t.admin}
+                        </Button>
+                      </Link>
+                    )}
+                  </>
+                ) : (
+                  <Link href="/login">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="rounded-2xl px-10 py-8 text-xl border-border/50 hover:bg-muted/50"
+                    >
+                      {t.signInDiscord}
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
 
