@@ -88,8 +88,25 @@ export default function Home() {
   const hasBots = myBots && myBots.length > 0;
   const isAdmin = user?.role === "admin" || user?.discordUsername === "6uvu" || user?.discordUsername === "5mcm";
 
+  // Random grid glow positions
+  const [glowPos, setGlowPos] = useState({ x: '50%', y: '50%' });
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGlowPos({
+        x: `${Math.random() * 100}%`,
+        y: `${Math.random() * 100}%`
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-transparent">
+      <div 
+        className="grid-glow" 
+        style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
+      ></div>
       {/* Navigation Header */}
       <header className="border-b border-border sticky top-0 bg-transparent/95 backdrop-blur z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -144,15 +161,13 @@ export default function Home() {
               <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-32 h-32" />
             </div>
 
-            <div className="overflow-hidden mb-8">
-              <div className="animate-[slideDownUp_4s_ease-in-out_infinite]">
-                <h1 className="text-7xl font-black mb-4 text-foreground leading-tight tracking-tighter">
-                  {t.title}
-                </h1>
-                <p className="text-2xl font-medium text-cyan-400/80 max-w-2xl mx-auto tracking-wide">
-                  {t.description}
-                </p>
-              </div>
+            <div className="relative mb-12 min-h-[180px] flex flex-col items-center justify-center overflow-hidden">
+              <h1 className="text-7xl font-black mb-4 text-foreground leading-tight tracking-tighter animate-[slideFromRight_6s_ease-in-out_infinite]">
+                {t.title}
+              </h1>
+              <p className="text-2xl font-medium text-cyan-400/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_6s_ease-in-out_infinite]">
+                {t.description}
+              </p>
             </div>
 
             <div className="flex gap-4 justify-center flex-wrap mt-12 mb-24">
