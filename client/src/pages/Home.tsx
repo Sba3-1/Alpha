@@ -108,7 +108,7 @@ export default function Home() {
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
       {/* Navigation Header - Centered Floating */}
-      <header className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 pt-3">
+      <header className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
         <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-3 flex items-center justify-between gap-16">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
@@ -157,7 +157,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4">
+      <section className="pt-40 pb-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <div className="relative mb-8 min-h-[160px] flex flex-col items-center justify-center overflow-hidden">
