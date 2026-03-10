@@ -108,52 +108,52 @@ export default function Home() {
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
       {/* Navigation Header */}
-      <header className="border-b border-border sticky top-0 bg-transparent/95 backdrop-blur z-50">
-        <div className="container mx-auto px-4 py-6">
-          {/* Logo Section - Top and Large */}
-          <div className="flex justify-center mb-6">
-            <div className="flex items-center gap-4">
-              <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-20 h-20" />
-              <span className="text-5xl font-black text-foreground tracking-tighter">ALPHA</span>
-            </div>
+      <header className="sticky top-0 bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 z-50">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+          {/* Left Side - Logo */}
+          <div className="flex items-center gap-3">
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-12 h-12" />
+            <span className="text-2xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
-          {/* Navigation - Centered */}
-          <nav className="flex items-center justify-center gap-8">
-            <Link href="/marketplace">
-              <span className="text-lg font-bold text-foreground/80 hover:text-cyan-400 transition-colors cursor-pointer">
-                {t.marketplace}
-              </span>
-            </Link>
-
-            {isAuthenticated && hasBots && (
-              <Link href="/dashboard">
-                <span className="text-lg font-bold text-foreground/80 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                  <LayoutDashboard className="w-5 h-5" />
-                  {t.dashboard}
+          {/* Right Side - Menu & Profile */}
+          <div className="flex items-center gap-8">
+            <nav className="flex items-center gap-6">
+              <Link href="/marketplace">
+                <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors cursor-pointer">
+                  {t.marketplace}
                 </span>
               </Link>
-            )}
 
-            {isAuthenticated && isAdmin && (
-              <Link href="/admin">
-                <span className="text-lg font-bold text-foreground/80 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                  <Settings className="w-5 h-5" />
-                  {t.admin}
-                </span>
-              </Link>
-            )}
+              {isAuthenticated && hasBots && (
+                <Link href="/dashboard">
+                  <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                    <LayoutDashboard className="w-4 h-4" />
+                    {t.dashboard}
+                  </span>
+                </Link>
+              )}
+
+              {isAuthenticated && isAdmin && (
+                <Link href="/admin">
+                  <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                    <Settings className="w-4 h-4" />
+                    {t.admin}
+                  </span>
+                </Link>
+              )}
+            </nav>
 
             {isAuthenticated ? (
               <ProfileDropdown />
             ) : (
               <Link href="/login">
-                <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl px-8 py-2 text-lg">
+                <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-lg px-6 py-2 text-sm">
                   {t.signIn}
                 </Button>
               </Link>
             )}
-          </nav>
+          </div>
         </div>
       </header>
 
