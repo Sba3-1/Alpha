@@ -184,7 +184,7 @@
     100% { transform: translateX(-100%); opacity: 0; }
   }
   
-  /* Moving Tech Grid Background with Scanning Glow */
+  /* Moving Tech Grid Background - Faster Diagonal Movement */
   body::after {
     content: "";
     position: fixed;
@@ -193,16 +193,15 @@
     right: -100%;
     bottom: -100%;
     background-image: 
-      linear-gradient(rgba(0, 163, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 163, 255, 0.1) 1px, transparent 1px);
+      linear-gradient(rgba(0, 163, 255, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 163, 255, 0.12) 1px, transparent 1px);
     background-size: 60px 60px;
     pointer-events: none;
     z-index: -1;
-    opacity: 0.5;
-    animation: gridMove 40s linear infinite;
+    opacity: 0.6;
+    animation: gridMove 15s linear infinite;
     mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
-
   /* Subtle Grid Line Glow Effect */
   .grid-glow {
     position: fixed;

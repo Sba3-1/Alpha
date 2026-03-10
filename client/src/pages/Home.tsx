@@ -162,10 +162,10 @@ export default function Home() {
             </div>
 
             <div className="relative mb-12 min-h-[180px] flex flex-col items-center justify-center overflow-hidden">
-              <h1 className="text-7xl font-black mb-4 text-foreground leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
+              <h1 className="text-5xl md:text-6xl font-black mb-4 text-foreground leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
                 {t.title}
               </h1>
-              <p className="text-2xl font-medium text-cyan-400/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
+              <p className="text-lg md:text-xl font-semibold text-cyan-400/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
                 {t.description}
               </p>
             </div>
