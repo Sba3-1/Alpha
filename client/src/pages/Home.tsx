@@ -19,7 +19,7 @@ const translations = {
     signInDiscord: "تسجيل الدخول عبر Discord",
     browseBot: "تصفح البوتات",
     title: "متجر ألفا",
-    description: "بوتات Discord متقدمة مصممة بدقة. اكتشف واشتري وادمج أدوات أتمتة قوية لخادمك",
+    description: "بوتات Discord متقدمة. دقة، أمان، واحترافية.",
     precision: "موثوق في العمل الحر",
     precisionDesc: "نحن جهة موثوقة ومعتمدة في منصات العمل الحر لضمان جودة الخدمة",
     secure: "أمان فائق",
@@ -36,7 +36,7 @@ const translations = {
     signInDiscord: "Sign In with Discord",
     browseBot: "Browse Bots",
     title: "ALPHA STORE",
-    description: "Premium Discord bots engineered with precision. Discover, purchase, and integrate powerful automation tools for your server.",
+    description: "Premium Discord bots. Precision, Security, Excellence.",
     precision: "FREELANCE TRUSTED",
     precisionDesc: "Verified and trusted in freelance platforms ensuring top-tier service quality",
     secure: "ULTRA SECURE",
@@ -144,15 +144,16 @@ export default function Home() {
               <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-32 h-32" />
             </div>
 
-            <h1 className="text-7xl font-bold mb-6 text-foreground leading-tight tracking-tighter overflow-hidden">
-              <span className="inline-block animate-[slideDownUp_4s_ease-in-out_infinite]">
-                {t.title}
-              </span>
-            </h1>
-
-            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {t.description}
-            </p>
+            <div className="overflow-hidden mb-8">
+              <div className="animate-[slideDownUp_4s_ease-in-out_infinite]">
+                <h1 className="text-7xl font-black mb-4 text-foreground leading-tight tracking-tighter">
+                  {t.title}
+                </h1>
+                <p className="text-2xl font-medium text-cyan-400/80 max-w-2xl mx-auto tracking-wide">
+                  {t.description}
+                </p>
+              </div>
+            </div>
 
             <div className="flex gap-4 justify-center flex-wrap mt-12 mb-24">
               <Link href="/marketplace">
