@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "wouter";
-import { ShoppingCart, Settings, LayoutDashboard, Shield, Lock, CheckCircle } from "lucide-react";
+import { ShoppingCart, Settings, LayoutDashboard, Shield, Lock, CheckCircle, Zap, Globe, MessageSquare, Code, Cpu, Bell, ChevronDown } from "lucide-react";
 import ProfileDropdown from "@/components/ProfileDropdown";
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
@@ -161,13 +161,26 @@ export default function Home() {
               <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-48 h-48 drop-shadow-[0_0_30px_rgba(0,163,255,0.4)] hover:scale-110 transition-transform duration-500" />
             </div>
 
-            <div className="relative mb-12 min-h-[180px] flex flex-col items-center justify-center overflow-hidden">
-              <h1 className="text-5xl md:text-6xl font-black mb-4 text-foreground leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
+            <div className="relative mb-12 min-h-[220px] flex flex-col items-center justify-center overflow-hidden">
+              <h1 className="text-6xl md:text-7xl font-black mb-6 text-white leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
                 {t.title}
               </h1>
-              <p className="text-lg md:text-xl font-semibold text-cyan-400/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
+              <p className="text-xl md:text-2xl font-medium text-muted-foreground max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
                 {t.description}
               </p>
+            </div>
+
+            <div className="flex flex-col items-center gap-6 mt-8">
+              <Link href="/marketplace">
+                <Button size="lg" className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-2xl px-12 py-8 text-xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all hover:scale-105">
+                  {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+                  <Zap className="w-6 h-6 fill-current" />
+                </Button>
+              </Link>
+              <button className="flex flex-col items-center gap-2 text-muted-foreground hover:text-white transition-colors animate-bounce mt-8">
+                <span className="text-sm font-bold uppercase tracking-widest">{language === 'ar' ? 'استكشف المزيد' : 'Explore More'}</span>
+                <ChevronDown className="w-6 h-6" />
+              </button>
             </div>
 
             <div className="flex gap-4 justify-center flex-wrap mt-12 mb-24">
@@ -206,11 +219,11 @@ export default function Home() {
             <div className="w-24 h-1 bg-cyan-400 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-            {/* Security Card */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            {/* Feature 1 */}
             <Link href="/info/security">
-              <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-cyan-400/50 transition-all duration-500 hover:translate-y-[-5px] cursor-pointer">
-                <div className="w-14 h-14 rounded-2xl bg-cyan-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className="glass-card p-8 cursor-pointer group">
+                <div className="w-16 h-16 rounded-2xl bg-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400/20 transition-colors">
                   <Shield className="w-8 h-8 text-cyan-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">{t.secure}</h3>
@@ -218,10 +231,10 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Protection Card */}
+            {/* Feature 2 */}
             <Link href="/info/protection">
-              <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-blue-400/50 transition-all duration-500 hover:translate-y-[-5px] cursor-pointer">
-                <div className="w-14 h-14 rounded-2xl bg-blue-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className="glass-card p-8 cursor-pointer group">
+                <div className="w-16 h-16 rounded-2xl bg-blue-400/10 flex items-center justify-center mb-6 group-hover:bg-blue-400/20 transition-colors">
                   <Lock className="w-8 h-8 text-blue-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">{t.scalable}</h3>
@@ -229,16 +242,41 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Trust Card */}
+            {/* Feature 3 */}
             <Link href="/info/trust">
-              <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-green-400/50 transition-all duration-500 hover:translate-y-[-5px] cursor-pointer">
-                <div className="w-14 h-14 rounded-2xl bg-green-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <div className="glass-card p-8 cursor-pointer group">
+                <div className="w-16 h-16 rounded-2xl bg-green-400/10 flex items-center justify-center mb-6 group-hover:bg-green-400/20 transition-colors">
                   <CheckCircle className="w-8 h-8 text-green-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">{t.precision}</h3>
                 <p className="text-muted-foreground leading-relaxed">{t.precisionDesc}</p>
               </div>
             </Link>
+
+            {/* New Solo-Safety Style Features */}
+            <div className="glass-card p-8 group">
+              <div className="w-16 h-16 rounded-2xl bg-purple-400/10 flex items-center justify-center mb-6 group-hover:bg-purple-400/20 transition-colors">
+                <Bell className="w-8 h-8 text-purple-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'إشعارات فورية' : 'Instant Notifications'}</h3>
+              <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'ابقَ على اطلاع دائم بنشاط بوتاتك من خلال نظام إشعارات متطور.' : 'Stay updated with your bot activity through an advanced notification system.'}</p>
+            </div>
+
+            <div className="glass-card p-8 group">
+              <div className="w-16 h-16 rounded-2xl bg-orange-400/10 flex items-center justify-center mb-6 group-hover:bg-orange-400/20 transition-colors">
+                <Code className="w-8 h-8 text-orange-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'أكواد مبسطة' : 'Simplified Code'}</h3>
+              <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'سهولة في التعامل والدمج حتى لو لم تكن خبيراً في البرمجة.' : 'Easy to handle and integrate even if you are not a programming expert.'}</p>
+            </div>
+
+            <div className="glass-card p-8 group">
+              <div className="w-16 h-16 rounded-2xl bg-pink-400/10 flex items-center justify-center mb-6 group-hover:bg-pink-400/20 transition-colors">
+                <MessageSquare className="w-8 h-8 text-pink-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'دعم متواصل' : 'Continuous Support'}</h3>
+              <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'فريق دعم فني متاح على مدار الساعة لمساعدتك في أي وقت.' : 'Technical support team available 24/7 to assist you at any time.'}</p>
+            </div>
           </div>
 
           {/* Trust Badges */}
