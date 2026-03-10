@@ -154,28 +154,50 @@ export default function Home() {
               {t.description}
             </p>
 
-            {/* Features Section */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-all">
-                <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04custom-variant dark (&:is(.dark *));A11.955 11.955 0 0112 21.056a11.955 11.955 0 018.618-3.04z"></path></svg>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{t.secure}</h3>
-                <p className="text-muted-foreground">{t.secureDesc}</p>
+            {/* Reassuring Trust Badges */}
+            <div className="flex flex-wrap justify-center gap-6 mt-16 mb-12">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-400/10 border border-cyan-400/20 backdrop-blur-md animate-pulse">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]"></div>
+                <span className="text-sm font-bold text-cyan-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'نظام محمي بالكامل' : 'FULLY PROTECTED SYSTEM'}
+                </span>
               </div>
-              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-all">
-                <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{t.scalable}</h3>
-                <p className="text-muted-foreground">{t.scalableDesc}</p>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-400/10 border border-green-400/20 backdrop-blur-md">
+                <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A11.955 11.955 0 0112 21.056a11.955 11.955 0 018.618-3.04z"></path></svg>
+                <span className="text-sm font-bold text-green-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'موثوق في العمل الحر' : 'FREELANCE VERIFIED'}
+                </span>
               </div>
-              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-all">
-                <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{t.precision}</h3>
-                <p className="text-muted-foreground">{t.precisionDesc}</p>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-400/10 border border-blue-400/20 backdrop-blur-md">
+                <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span className="text-sm font-bold text-blue-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'تشفير بيانات متقدم' : 'ADVANCED ENCRYPTION'}
+                </span>
+              </div>
+            </div>
+
+            {/* Main Content Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <div className="group p-8 rounded-[2.5rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 backdrop-blur-xl hover:border-cyan-400/40 transition-all duration-500 hover:translate-y-[-10px] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-cyan-400/20 transition-all"></div>
+                <h3 className="text-3xl font-black text-white mb-4 flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-2xl bg-cyan-400/20 flex items-center justify-center text-cyan-400">🛡️</span>
+                  {t.secure}
+                </h3>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {t.secureDesc}
+                </p>
+              </div>
+              
+              <div className="group p-8 rounded-[2.5rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 backdrop-blur-xl hover:border-cyan-400/40 transition-all duration-500 hover:translate-y-[-10px] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-blue-400/20 transition-all"></div>
+                <h3 className="text-3xl font-black text-white mb-4 flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-2xl bg-blue-400/20 flex items-center justify-center text-blue-400">💎</span>
+                  {t.precision}
+                </h3>
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  {t.precisionDesc}
+                </p>
               </div>
             </div>
 
