@@ -211,6 +211,7 @@ export default function Home() {
           </div>
 
 
+          </div>
         </div>
       </section>
 
@@ -224,7 +225,7 @@ export default function Home() {
             <div className="w-24 h-1 bg-cyan-400 mx-auto rounded-full"></div>
           </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
             {/* Feature 1 - Security */}
             <Link href="/info/security">
               <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-cyan-500/10 to-cyan-400/5 hover:from-cyan-500/20 hover:to-cyan-400/10 hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all duration-300 h-full">
@@ -291,7 +292,8 @@ export default function Home() {
               </div>
             </a>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="border-t border-white/5 py-12 px-4 bg-black/40">

@@ -37,14 +37,14 @@ const infoContent = {
     },
     trust: {
       title: "موثوق في العمل الحر",
-      description: "نحن جهة معتمدة وموثقة في منصات العمل الحر العالمية، مما يضمن لك حقوقك وجودة الخدمة المقدمة.",
+      description: "نحن جهة موثوقة ومعتمدة في منصات العمل الحر لضمان جودة الخدمة.",
       details: [
-        "شهادة توثيق معتمدة من منصات العمل الحر الرسمية.",
+        "شهادة توثيق معتمدة من منصات العمل الحر الرسمية لضمان حقوقك.",
         "سجل حافل من المشاريع الناجحة والتقييمات الممتازة من العملاء.",
-        "دعم فني مباشر وسريع لجميع العملاء والشركاء.",
-        "ضمان استرداد الأموال في حال عدم الرضا التام.",
-        "التزام كامل بالمواعيد والجودة المتفق عليها.",
-        "شفافية كاملة في جميع المعاملات والتعاقدات."
+        "دعم فني مباشر وسريع لجميع العملاء والشركاء على مدار الساعة.",
+        "ضمان الجودة والالتزام الكامل بالمعايير المتفق عليها في كل مشروع.",
+        "شفافية كاملة في جميع المعاملات والتعاقدات لضمان رضاك.",
+        "حماية المشتري - نضمن لك استلام الخدمة بالجودة المطلوبة أو استرداد حقك."
       ],
       icon: <CheckCircle className="w-16 h-16 text-green-400" />,
       color: "green"
@@ -123,14 +123,14 @@ const infoContent = {
     },
     trust: {
       title: "Freelance Trusted",
-      description: "We are a verified and certified entity on international freelance platforms, ensuring your rights and the quality of service provided.",
+      description: "We are a trusted and certified entity on freelance platforms to ensure service quality.",
       details: [
-        "Certified verification from official freelance platforms.",
-        "A track record of successful projects and excellent client ratings.",
-        "Direct and fast technical support for all clients and partners.",
-        "Money-back guarantee in case of complete dissatisfaction.",
-        "Full commitment to agreed deadlines and quality standards.",
-        "Complete transparency in all transactions and contracts."
+        "Certified verification from official freelance platforms to guarantee your rights.",
+        "A track record of successful projects and excellent ratings from clients.",
+        "Direct and fast technical support for all clients and partners 24/7.",
+        "Quality assurance and full commitment to agreed standards in every project.",
+        "Complete transparency in all transactions and contracts to ensure your satisfaction.",
+        "Buyer protection - We guarantee you receive the service at the required quality or refund your money."
       ],
       icon: <CheckCircle className="w-16 h-16 text-green-400" />,
       color: "green"
