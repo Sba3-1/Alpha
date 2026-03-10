@@ -157,11 +157,11 @@ export default function Home() {
       <section className="py-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <div className="mb-16 flex justify-center">
+            <div className="mb-6 flex justify-center">
               <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-64 h-64 drop-shadow-[0_0_50px_rgba(0,163,255,0.5)] hover:scale-105 transition-transform duration-700" />
             </div>
 
-            <div className="relative mb-12 min-h-[180px] flex flex-col items-center justify-center overflow-hidden">
+            <div className="relative mb-8 min-h-[160px] flex flex-col items-center justify-center overflow-hidden">
               <h1 className="text-5xl md:text-6xl font-black mb-4 text-white leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
                 {t.title}
               </h1>
