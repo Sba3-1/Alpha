@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'wouter';
+import { MessageSquare } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -21,7 +22,7 @@ const Footer: React.FC = () => {
             <span className="text-sm font-bold text-cyan-400">موثوقين في العمل الحر</span>
           </a>
 
-          {/* Links and Info */}
+          {/* Links and Support */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-center">
             <Link href="/terms">
               <span className="text-sm font-semibold text-foreground/80 hover:text-cyan-400 transition-colors cursor-pointer">
@@ -29,9 +30,15 @@ const Footer: React.FC = () => {
               </span>
             </Link>
             <span className="text-foreground/60 text-sm">•</span>
-            <span className="text-xs text-foreground/60">
-              © 2026 متجر ألفا - Alpha Store. جميع الحقوق محفوظة.
-            </span>
+            <a 
+              href="https://discord.gg/yFZTCSFNJG" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-pink-400 transition-colors"
+            >
+              <MessageSquare className="w-4 h-4" />
+              الدعم الفني | Technical Support
+            </a>
           </div>
         </div>
       </div>
