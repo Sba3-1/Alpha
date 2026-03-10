@@ -109,23 +109,27 @@ export default function Home() {
       ></div>
       {/* Navigation Header */}
       <header className="border-b border-border sticky top-0 bg-transparent/95 backdrop-blur z-50">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-10 h-10" />
-            <span className="text-2xl font-bold text-foreground tracking-tighter">ALPHA</span>
+        <div className="container mx-auto px-4 py-6">
+          {/* Logo Section - Top and Large */}
+          <div className="flex justify-center mb-6">
+            <div className="flex items-center gap-4">
+              <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-20 h-20" />
+              <span className="text-5xl font-black text-foreground tracking-tighter">ALPHA</span>
+            </div>
           </div>
 
-          <nav className="flex items-center gap-6">
+          {/* Navigation - Centered */}
+          <nav className="flex items-center justify-center gap-8">
             <Link href="/marketplace">
-              <span className="text-foreground/80 hover:text-cyan-400 transition-colors font-medium cursor-pointer">
+              <span className="text-lg font-bold text-foreground/80 hover:text-cyan-400 transition-colors cursor-pointer">
                 {t.marketplace}
               </span>
             </Link>
 
             {isAuthenticated && hasBots && (
               <Link href="/dashboard">
-                <span className="text-foreground/80 hover:text-cyan-400 transition-colors font-medium flex items-center gap-2 cursor-pointer">
-                  <LayoutDashboard className="w-4 h-4" />
+                <span className="text-lg font-bold text-foreground/80 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                  <LayoutDashboard className="w-5 h-5" />
                   {t.dashboard}
                 </span>
               </Link>
@@ -133,8 +137,8 @@ export default function Home() {
 
             {isAuthenticated && isAdmin && (
               <Link href="/admin">
-                <span className="text-foreground/80 hover:text-cyan-400 transition-colors font-medium flex items-center gap-2 cursor-pointer">
-                  <Settings className="w-4 h-4" />
+                <span className="text-lg font-bold text-foreground/80 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                  <Settings className="w-5 h-5" />
                   {t.admin}
                 </span>
               </Link>
@@ -144,7 +148,7 @@ export default function Home() {
               <ProfileDropdown />
             ) : (
               <Link href="/login">
-                <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl px-6">
+                <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl px-8 py-2 text-lg">
                   {t.signIn}
                 </Button>
               </Link>
@@ -157,15 +161,11 @@ export default function Home() {
       <section className="py-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <div className="mb-6 flex justify-center">
-              <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-64 h-64 drop-shadow-[0_0_50px_rgba(0,163,255,0.5)] hover:scale-105 transition-transform duration-700" />
-            </div>
-
             <div className="relative mb-8 min-h-[160px] flex flex-col items-center justify-center overflow-hidden">
-              <h1 className="text-5xl md:text-6xl font-black mb-4 text-white leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
+              <h1 className="text-7xl md:text-8xl font-black mb-6 text-white leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
                 {t.title}
               </h1>
-              <p className="text-lg md:text-xl font-medium text-muted-foreground/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
+              <p className="text-2xl md:text-3xl font-bold text-muted-foreground/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
                 {t.description}
               </p>
             </div>
