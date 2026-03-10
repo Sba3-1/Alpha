@@ -108,7 +108,7 @@ export default function Home() {
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
       {/* Navigation Header - Centered Floating */}
-      <header className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
+      <header className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
         <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-8 py-4 flex items-center justify-between gap-12">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
@@ -224,12 +224,12 @@ export default function Home() {
             <div className="w-24 h-1 bg-cyan-400 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-            {/* Feature 1 */}
-            <Link href="/info/security">
-              <div className="glass-card p-8 cursor-pointer group">
-                <div className="w-16 h-16 rounded-2xl bg-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400/20 transition-colors">
-                  <Shield className="w-8 h-8 text-cyan-400" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-right auto-rows-max" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            {/* Feature 1 - Large, spans 2 rows */}
+            <Link href="/info/security" className="lg:row-span-2">
+              <div className="glass-card p-8 cursor-pointer group h-full hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all">
+                <div className="w-20 h-20 rounded-3xl bg-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400/20 transition-colors">
+                  <Shield className="w-10 h-10 text-cyan-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">{t.secure}</h3>
                 <p className="text-muted-foreground leading-relaxed">{t.secureDesc}</p>
@@ -238,7 +238,7 @@ export default function Home() {
 
             {/* Feature 2 */}
             <Link href="/info/protection">
-              <div className="glass-card p-8 cursor-pointer group">
+              <div className="glass-card p-8 cursor-pointer group hover:shadow-[0_0_30px_rgba(96,165,250,0.3)] transition-all">
                 <div className="w-16 h-16 rounded-2xl bg-blue-400/10 flex items-center justify-center mb-6 group-hover:bg-blue-400/20 transition-colors">
                   <Lock className="w-8 h-8 text-blue-400" />
                 </div>
@@ -249,7 +249,7 @@ export default function Home() {
 
             {/* Feature 3 */}
             <Link href="/info/trust">
-              <div className="glass-card p-8 cursor-pointer group">
+              <div className="glass-card p-8 cursor-pointer group hover:shadow-[0_0_30px_rgba(34,197,94,0.3)] transition-all">
                 <div className="w-16 h-16 rounded-2xl bg-green-400/10 flex items-center justify-center mb-6 group-hover:bg-green-400/20 transition-colors">
                   <CheckCircle className="w-8 h-8 text-green-400" />
                 </div>
@@ -258,8 +258,8 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* New Solo-Safety Style Features */}
-            <div className="glass-card p-8 group">
+            {/* Feature 4 - Notifications */}
+            <div className="glass-card p-8 group hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] transition-all">
               <div className="w-16 h-16 rounded-2xl bg-purple-400/10 flex items-center justify-center mb-6 group-hover:bg-purple-400/20 transition-colors">
                 <Bell className="w-8 h-8 text-purple-400" />
               </div>
@@ -267,7 +267,8 @@ export default function Home() {
               <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'ابقَ على اطلاع دائم بنشاط بوتاتك من خلال نظام إشعارات متطور.' : 'Stay updated with your bot activity through an advanced notification system.'}</p>
             </div>
 
-            <div className="glass-card p-8 group">
+            {/* Feature 5 - Code, spans 2 cols */}
+            <div className="glass-card p-8 group lg:col-span-2 hover:shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all">
               <div className="w-16 h-16 rounded-2xl bg-orange-400/10 flex items-center justify-center mb-6 group-hover:bg-orange-400/20 transition-colors">
                 <Code className="w-8 h-8 text-orange-400" />
               </div>
@@ -275,7 +276,8 @@ export default function Home() {
               <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'سهولة في التعامل والدمج حتى لو لم تكن خبيراً في البرمجة.' : 'Easy to handle and integrate even if you are not a programming expert.'}</p>
             </div>
 
-            <div className="glass-card p-8 group">
+            {/* Feature 6 - Support */}
+            <div className="glass-card p-8 group hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all">
               <div className="w-16 h-16 rounded-2xl bg-pink-400/10 flex items-center justify-center mb-6 group-hover:bg-pink-400/20 transition-colors">
                 <MessageSquare className="w-8 h-8 text-pink-400" />
               </div>
