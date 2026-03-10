@@ -107,53 +107,52 @@ export default function Home() {
         className="grid-glow" 
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
-      {/* Navigation Header */}
-      <header className="sticky top-0 bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 z-50">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      {/* Navigation Header - Centered Floating */}
+      <header className="fixed top-8 left-1/2 transform -translate-x-1/2 z-50">
+        <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-8 py-4 flex items-center justify-between gap-12">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-12 h-12" />
-            <span className="text-2xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-10 h-10" />
+            <span className="text-xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
-          {/* Right Side - Menu & Profile */}
-          <div className="flex items-center gap-8">
-            <nav className="flex items-center gap-6">
-              <Link href="/marketplace">
-                <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors cursor-pointer">
-                  {t.marketplace}
+          {/* Center - Menu */}
+          <nav className="flex items-center gap-6">
+            <Link href="/marketplace">
+              <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors cursor-pointer">
+                {t.marketplace}
+              </span>
+            </Link>
+
+            {isAuthenticated && hasBots && (
+              <Link href="/dashboard">
+                <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                  <LayoutDashboard className="w-4 h-4" />
+                  {t.dashboard}
                 </span>
               </Link>
+            )}
 
-              {isAuthenticated && hasBots && (
-                <Link href="/dashboard">
-                  <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                    <LayoutDashboard className="w-4 h-4" />
-                    {t.dashboard}
-                  </span>
-                </Link>
-              )}
-
-              {isAuthenticated && isAdmin && (
-                <Link href="/admin">
-                  <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                    <Settings className="w-4 h-4" />
-                    {t.admin}
-                  </span>
-                </Link>
-              )}
-            </nav>
-
-            {isAuthenticated ? (
-              <ProfileDropdown />
-            ) : (
-              <Link href="/login">
-                <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-lg px-6 py-2 text-sm">
-                  {t.signIn}
-                </Button>
+            {isAuthenticated && isAdmin && (
+              <Link href="/admin">
+                <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                  <Settings className="w-4 h-4" />
+                  {t.admin}
+                </span>
               </Link>
             )}
-          </div>
+          </nav>
+
+          {/* Right Side - Profile/Auth */}
+          {isAuthenticated ? (
+            <ProfileDropdown />
+          ) : (
+            <Link href="/login">
+              <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-lg px-6 py-2 text-sm">
+                {t.signIn}
+              </Button>
+            </Link>
+          )}
         </div>
       </header>
 
