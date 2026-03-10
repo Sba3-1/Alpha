@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { Shield, Lock, CheckCircle, Bell, Code, MessageSquare, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-type InfoType = 'security' | 'protection' | 'trust' | 'notifications' | 'code' | 'support';
+type InfoType = 'security' | 'protection' | 'trust' | 'notifications' | 'support';
 
 const infoContent = {
   ar: {
@@ -148,20 +148,6 @@ const infoContent = {
       ],
       icon: <Bell className="w-16 h-16 text-purple-400" />,
       color: "purple"
-    },
-    code: {
-      title: "Simplified Code",
-      description: "Easy to handle and integrate even if you are not a programming expert. Comprehensive documentation and practical examples.",
-      details: [
-        "Easy-to-use API with complete documentation.",
-        "Practical examples and ready-to-use code snippets.",
-        "Multi-language programming libraries (Python, JavaScript, etc).",
-        "Comprehensive documentation with video tutorials.",
-        "Specialized technical support to help with development.",
-        "Active developer community for collaboration and assistance."
-      ],
-      icon: <Code className="w-16 h-16 text-orange-400" />,
-      color: "orange"
     },
     support: {
       title: "Continuous Support",

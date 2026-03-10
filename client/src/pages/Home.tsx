@@ -222,7 +222,7 @@ export default function Home() {
             <div className="w-24 h-1 bg-cyan-400 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
             {/* Feature 1 - Security */}
             <Link href="/info/security">
               <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-cyan-500/10 to-cyan-400/5 hover:from-cyan-500/20 hover:to-cyan-400/10 hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all duration-300 h-full">
@@ -266,17 +266,6 @@ export default function Home() {
                 <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'ابقَ على اطلاع دائم بنشاط بوتاتك من خلال نظام إشعارات متطور.' : 'Stay updated with your bot activity through an advanced notification system.'}</p>
               </div>
             </a>
-
-            {/* Feature 5 - Code */}
-            <Link href="/info/code">
-              <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-orange-500/10 to-orange-400/5 hover:from-orange-500/20 hover:to-orange-400/10 hover:shadow-[0_0_40px_rgba(249,115,22,0.4)] transition-all duration-300 h-full">
-                <div className="w-16 h-16 rounded-2xl bg-orange-400/20 flex items-center justify-center mb-6 group-hover:bg-orange-400/30 transition-colors">
-                  <Code className="w-8 h-8 text-orange-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'أكواد مبسطة' : 'Simplified Code'}</h3>
-                <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'سهولة في التعامل والدمج حتى لو لم تكن خبيراً في البرمجة.' : 'Easy to handle and integrate even if you are not a programming expert.'}</p>
-              </div>
-            </Link>
 
             {/* Feature 6 - Support */}
             <a href="https://discord.gg/yFZTCSFNJG" target="_blank" rel="noopener noreferrer">
