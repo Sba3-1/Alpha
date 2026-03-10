@@ -112,7 +112,7 @@ export default function Home() {
         <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-4 flex items-center justify-between gap-16">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-14 h-14" />
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-16 h-16" />
             <span className="text-lg font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
