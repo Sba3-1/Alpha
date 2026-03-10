@@ -6,7 +6,7 @@ import ProfileDropdown from "@/components/ProfileDropdown";
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 
-const ALPHA_LOGO_URL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663393177212/ctrFBa9TUqFriciGXSA6RL/alpha_logo_imgur_aa3f1fac.webp";
+const ALPHA_LOGO_URL = "/logo.png";
 
 type Language = "ar" | "en";
 
@@ -121,8 +121,10 @@ export default function Home() {
               <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-32 h-32" />
             </div>
 
-            <h1 className="text-7xl font-bold mb-6 text-foreground leading-tight tracking-tighter">
-              {t.title}
+            <h1 className="text-7xl font-bold mb-6 text-foreground leading-tight tracking-tighter overflow-hidden">
+              <span className="inline-block animate-[slideDownUp_4s_ease-in-out_infinite]">
+                {t.title}
+              </span>
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">

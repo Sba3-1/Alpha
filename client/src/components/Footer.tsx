@@ -11,8 +11,8 @@ const Footer: React.FC = () => {
           className="transition-transform hover:scale-105 flex flex-col items-center gap-2"
         >
           <img 
-            src="/freelance-logo.png" 
-            alt="موثوقين في العمل الحر" 
+            src="/logo.png" 
+            alt="Alpha Logo" 
             className="h-16 md:h-20 object-contain"
           />
           <span className="text-sm font-bold text-cyan-400">موثوقين في العمل الحر</span>
