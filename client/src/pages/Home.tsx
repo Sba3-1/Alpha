@@ -108,7 +108,7 @@ export default function Home() {
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
       {/* Navigation Header - Centered Floating */}
-      <header className="fixed top-2 left-1/2 transform -translate-x-1/2 z-50">
+      <header className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 pt-2">
         <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-8 py-4 flex items-center justify-between gap-12">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
@@ -222,61 +222,81 @@ export default function Home() {
             <div className="w-24 h-1 bg-cyan-400 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-            {/* Feature 1 - Security */}
-            <Link href="/info/security">
-              <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-cyan-500/10 to-cyan-400/5 hover:from-cyan-500/20 hover:to-cyan-400/10 hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all duration-300 h-full">
-                <div className="w-16 h-16 rounded-2xl bg-cyan-400/20 flex items-center justify-center mb-6 group-hover:bg-cyan-400/30 transition-colors">
-                  <Shield className="w-8 h-8 text-cyan-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{t.secure}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t.secureDesc}</p>
+          <div className="flex flex-col gap-6 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+            {/* Row 1: Feature 1 (Right) */}
+            <div className="flex justify-end">
+              <div className="w-full md:w-1/2">
+                <Link href="/info/security">
+                  <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-cyan-500/10 to-cyan-400/5 hover:from-cyan-500/20 hover:to-cyan-400/10 hover:shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all duration-300 h-full">
+                    <div className="w-16 h-16 rounded-2xl bg-cyan-400/20 flex items-center justify-center mb-6 group-hover:bg-cyan-400/30 transition-colors">
+                      <Shield className="w-8 h-8 text-cyan-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{t.secure}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{t.secureDesc}</p>
+                  </div>
+                </Link>
               </div>
-            </Link>
+            </div>
 
-            {/* Feature 2 - Protection */}
-            <Link href="/info/protection">
-              <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-blue-500/10 to-blue-400/5 hover:from-blue-500/20 hover:to-blue-400/10 hover:shadow-[0_0_40px_rgba(96,165,250,0.4)] transition-all duration-300 h-full">
-                <div className="w-16 h-16 rounded-2xl bg-blue-400/20 flex items-center justify-center mb-6 group-hover:bg-blue-400/30 transition-colors">
-                  <Lock className="w-8 h-8 text-blue-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{t.scalable}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t.scalableDesc}</p>
+            {/* Row 2: Feature 2 (Left) */}
+            <div className="flex justify-start">
+              <div className="w-full md:w-1/2">
+                <Link href="/info/protection">
+                  <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-blue-500/10 to-blue-400/5 hover:from-blue-500/20 hover:to-blue-400/10 hover:shadow-[0_0_40px_rgba(96,165,250,0.4)] transition-all duration-300 h-full">
+                    <div className="w-16 h-16 rounded-2xl bg-blue-400/20 flex items-center justify-center mb-6 group-hover:bg-blue-400/30 transition-colors">
+                      <Lock className="w-8 h-8 text-blue-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{t.scalable}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{t.scalableDesc}</p>
+                  </div>
+                </Link>
               </div>
-            </Link>
+            </div>
 
-            {/* Feature 3 - Trust */}
-            <Link href="/info/trust">
-              <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-green-500/10 to-green-400/5 hover:from-green-500/20 hover:to-green-400/10 hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300 h-full">
-                <div className="w-16 h-16 rounded-2xl bg-green-400/20 flex items-center justify-center mb-6 group-hover:bg-green-400/30 transition-colors">
-                  <CheckCircle className="w-8 h-8 text-green-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{t.precision}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t.precisionDesc}</p>
+            {/* Row 3: Feature 3 (Center) */}
+            <div className="flex justify-center">
+              <div className="w-full md:w-1/2">
+                <Link href="/info/trust">
+                  <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-green-500/10 to-green-400/5 hover:from-green-500/20 hover:to-green-400/10 hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300 h-full">
+                    <div className="w-16 h-16 rounded-2xl bg-green-400/20 flex items-center justify-center mb-6 group-hover:bg-green-400/30 transition-colors">
+                      <CheckCircle className="w-8 h-8 text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{t.precision}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{t.precisionDesc}</p>
+                  </div>
+                </Link>
               </div>
-            </Link>
+            </div>
 
-            {/* Feature 4 - Notifications */}
-            <a href="https://discord.gg/yFZTCSFNJG" target="_blank" rel="noopener noreferrer">
-              <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-purple-500/10 to-purple-400/5 hover:from-purple-500/20 hover:to-purple-400/10 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all duration-300 h-full">
-                <div className="w-16 h-16 rounded-2xl bg-purple-400/20 flex items-center justify-center mb-6 group-hover:bg-purple-400/30 transition-colors">
-                  <Bell className="w-8 h-8 text-purple-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'إشعارات فورية' : 'Instant Notifications'}</h3>
-                <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'ابقَ على اطلاع دائم بنشاط بوتاتك من خلال نظام إشعارات متطور.' : 'Stay updated with your bot activity through an advanced notification system.'}</p>
+            {/* Row 4: Feature 4 (Right) */}
+            <div className="flex justify-end">
+              <div className="w-full md:w-1/2">
+                <a href="https://discord.gg/yFZTCSFNJG" target="_blank" rel="noopener noreferrer">
+                  <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-purple-500/10 to-purple-400/5 hover:from-purple-500/20 hover:to-purple-400/10 hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] transition-all duration-300 h-full">
+                    <div className="w-16 h-16 rounded-2xl bg-purple-400/20 flex items-center justify-center mb-6 group-hover:bg-purple-400/30 transition-colors">
+                      <Bell className="w-8 h-8 text-purple-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'إشعارات فورية' : 'Instant Notifications'}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'ابقَ على اطلاع دائم بنشاط بوتاتك من خلال نظام إشعارات متطور.' : 'Stay updated with your bot activity through an advanced notification system.'}</p>
+                  </div>
+                </a>
               </div>
-            </a>
+            </div>
 
-            {/* Feature 6 - Support */}
-            <a href="https://discord.gg/yFZTCSFNJG" target="_blank" rel="noopener noreferrer">
-              <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-pink-500/10 to-pink-400/5 hover:from-pink-500/20 hover:to-pink-400/10 hover:shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all duration-300 h-full">
-                <div className="w-16 h-16 rounded-2xl bg-pink-400/20 flex items-center justify-center mb-6 group-hover:bg-pink-400/30 transition-colors">
-                  <MessageSquare className="w-8 h-8 text-pink-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'دعم متواصل' : 'Continuous Support'}</h3>
-                <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'فريق دعم فني متاح على مدار الساعة لمساعدتك في أي وقت.' : 'Technical support team available 24/7 to assist you at any time.'}</p>
+            {/* Row 5: Feature 5 (Left) */}
+            <div className="flex justify-start">
+              <div className="w-full md:w-1/2">
+                <a href="https://discord.gg/yFZTCSFNJG" target="_blank" rel="noopener noreferrer">
+                  <div className="glass-card p-8 cursor-pointer group bg-gradient-to-br from-pink-500/10 to-pink-400/5 hover:from-pink-500/20 hover:to-pink-400/10 hover:shadow-[0_0_40px_rgba(236,72,153,0.4)] transition-all duration-300 h-full">
+                    <div className="w-16 h-16 rounded-2xl bg-pink-400/20 flex items-center justify-center mb-6 group-hover:bg-pink-400/30 transition-colors">
+                      <MessageSquare className="w-8 h-8 text-pink-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">{language === 'ar' ? 'دعم متواصل' : 'Continuous Support'}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{language === 'ar' ? 'فريق دعم فني متاح على مدار الساعة لمساعدتك في أي وقت.' : 'Technical support team available 24/7 to assist you at any time.'}</p>
+                  </div>
+                </a>
               </div>
-            </a>
+            </div>
           </div>
         </div>
       </section>
