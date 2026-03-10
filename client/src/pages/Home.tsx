@@ -109,10 +109,10 @@ export default function Home() {
       ></div>
       {/* Navigation Header - Centered Floating */}
       <header className="fixed top-[34px] left-1/2 transform -translate-x-1/2 z-50">
-        <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-6 flex items-center justify-between gap-16">
+        <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-4 flex items-center justify-between gap-16">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-3">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-28 h-28" />
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-14 h-14" />
             <span className="text-lg font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
