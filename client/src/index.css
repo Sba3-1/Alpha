@@ -132,7 +132,7 @@
   body {
     background-color: #020617 !important;
     color: oklch(0.98 0.01 0) !important;
-    font-family: "Cairo", "Inter", system-ui, sans-serif;
+    font-family: 'Cairo', 'Inter', sans-serif !important;
     position: relative;
     min-height: 100vh;
     margin: 0;
@@ -203,8 +203,8 @@
     mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
 
-  /* Scanning Glow Effect Layer */
-  .grid-scanner {
+  /* Subtle Grid Line Glow Effect */
+  .grid-glow {
     position: fixed;
     top: 0;
     left: 0;
@@ -212,14 +212,14 @@
     height: 100%;
     pointer-events: none;
     z-index: -1;
-    background: linear-gradient(to bottom, transparent, rgba(0, 163, 255, 0.15), transparent);
-    background-size: 100% 200px;
-    animation: scanMove 8s linear infinite;
+    background: radial-gradient(circle at var(--gx) var(--gy), rgba(0, 163, 255, 0.4), transparent 150px);
+    mix-blend-mode: screen;
+    animation: randomGlow 4s ease-in-out infinite;
   }
 
-  @keyframes scanMove {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100vh); }
+  @keyframes randomGlow {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
   }
 
   @keyframes gridMove {
@@ -292,7 +292,7 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: "Cairo", "Inter", system-ui, sans-serif;
+    font-family: 'Cairo', 'Inter', sans-serif !important;
     font-weight: 900;
     letter-spacing: -0.03em;
   }

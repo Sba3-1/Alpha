@@ -93,7 +93,6 @@ export default function InfoPage({ params }: { params: { type: string } }) {
 
   return (
     <div className="min-h-screen pt-32 pb-20 px-4 relative overflow-hidden">
-      <div className="grid-scanner"></div>
       <div className="container mx-auto max-w-4xl relative z-10">
         <Button 
           variant="ghost" 
