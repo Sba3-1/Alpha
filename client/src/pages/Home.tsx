@@ -6,7 +6,7 @@ import ProfileDropdown from "@/components/ProfileDropdown";
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 
-const ALPHA_LOGO_URL = "/logo.png";
+const ALPHA_LOGO_URL = "/alpha-logo.png";
 
 type Language = "ar" | "en";
 
