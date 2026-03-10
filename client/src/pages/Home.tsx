@@ -1,7 +1,7 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { ShoppingCart, Settings, LayoutDashboard } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { ShoppingCart, Settings, LayoutDashboard, Shield, Lock, CheckCircle } from "lucide-react";
 import ProfileDropdown from "@/components/ProfileDropdown";
 import { useState, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
@@ -162,10 +162,10 @@ export default function Home() {
             </div>
 
             <div className="relative mb-12 min-h-[180px] flex flex-col items-center justify-center overflow-hidden">
-              <h1 className="text-7xl font-black mb-4 text-foreground leading-tight tracking-tighter animate-[slideFromRight_6s_ease-in-out_infinite]">
+              <h1 className="text-7xl font-black mb-4 text-foreground leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
                 {t.title}
               </h1>
-              <p className="text-2xl font-medium text-cyan-400/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_6s_ease-in-out_infinite]">
+              <p className="text-2xl font-medium text-cyan-400/80 max-w-2xl mx-auto tracking-wide animate-[slideFromLeft_10s_ease-in-out_infinite]">
                 {t.description}
               </p>
             </div>
@@ -208,47 +208,65 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
             {/* Security Card */}
-            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-cyan-400/50 transition-all duration-500 hover:translate-y-[-5px]">
-              <div className="w-14 h-14 rounded-2xl bg-cyan-400/20 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">🛡️</div>
-              <h3 className="text-2xl font-bold text-white mb-4">{t.secure}</h3>
-              <p className="text-muted-foreground leading-relaxed">{t.secureDesc}</p>
-            </div>
+            <Link href="/info/security">
+              <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-cyan-400/50 transition-all duration-500 hover:translate-y-[-5px] cursor-pointer">
+                <div className="w-14 h-14 rounded-2xl bg-cyan-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Shield className="w-8 h-8 text-cyan-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">{t.secure}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t.secureDesc}</p>
+              </div>
+            </Link>
 
             {/* Protection Card */}
-            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-blue-400/50 transition-all duration-500 hover:translate-y-[-5px]">
-              <div className="w-14 h-14 rounded-2xl bg-blue-400/20 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">🔒</div>
-              <h3 className="text-2xl font-bold text-white mb-4">{t.scalable}</h3>
-              <p className="text-muted-foreground leading-relaxed">{t.scalableDesc}</p>
-            </div>
+            <Link href="/info/protection">
+              <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-blue-400/50 transition-all duration-500 hover:translate-y-[-5px] cursor-pointer">
+                <div className="w-14 h-14 rounded-2xl bg-blue-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <Lock className="w-8 h-8 text-blue-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">{t.scalable}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t.scalableDesc}</p>
+              </div>
+            </Link>
 
             {/* Trust Card */}
-            <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-green-400/50 transition-all duration-500 hover:translate-y-[-5px]">
-              <div className="w-14 h-14 rounded-2xl bg-green-400/20 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">💎</div>
-              <h3 className="text-2xl font-bold text-white mb-4">{t.precision}</h3>
-              <p className="text-muted-foreground leading-relaxed">{t.precisionDesc}</p>
-            </div>
+            <Link href="/info/trust">
+              <div className="group p-8 rounded-[2rem] bg-white/5 border border-white/10 hover:border-green-400/50 transition-all duration-500 hover:translate-y-[-5px] cursor-pointer">
+                <div className="w-14 h-14 rounded-2xl bg-green-400/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <CheckCircle className="w-8 h-8 text-green-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">{t.precision}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t.precisionDesc}</p>
+              </div>
+            </Link>
           </div>
 
           {/* Trust Badges */}
           <div className="flex flex-wrap justify-center gap-6 mt-20">
-            <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-cyan-400/10 border border-cyan-400/20 backdrop-blur-md">
-              <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></div>
-              <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
-                {language === 'ar' ? 'نظام محمي بالكامل' : 'FULLY PROTECTED SYSTEM'}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-400/10 border border-green-400/20 backdrop-blur-md">
-              <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A11.955 11.955 0 0112 21.056a11.955 11.955 0 018.618-3.04z"></path></svg>
-              <span className="text-xs font-black text-green-400 uppercase tracking-widest">
-                {language === 'ar' ? 'موثوق في العمل الحر' : 'FREELANCE VERIFIED'}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-400/10 border border-blue-400/20 backdrop-blur-md">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-              <span className="text-xs font-black text-blue-400 uppercase tracking-widest">
-                {language === 'ar' ? 'تشفير بيانات متقدم' : 'ADVANCED ENCRYPTION'}
-              </span>
-            </div>
+            <Link href="/info/protection">
+              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-cyan-400/10 border border-cyan-400/20 backdrop-blur-md cursor-pointer hover:bg-cyan-400/20 transition-all">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#22d3ee]"></div>
+                <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'نظام محمي بالكامل' : 'FULLY PROTECTED SYSTEM'}
+                </span>
+              </div>
+            </Link>
+            <Link href="/info/trust">
+              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-400/10 border border-green-400/20 backdrop-blur-md cursor-pointer hover:bg-green-400/20 transition-all">
+                <CheckCircle className="w-4 h-4 text-green-400" />
+                <span className="text-xs font-black text-green-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'موثوق في العمل الحر' : 'FREELANCE VERIFIED'}
+                </span>
+              </div>
+            </Link>
+            <Link href="/info/security">
+              <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-blue-400/10 border border-blue-400/20 backdrop-blur-md cursor-pointer hover:bg-blue-400/20 transition-all">
+                <Shield className="w-4 h-4 text-blue-400" />
+                <span className="text-xs font-black text-blue-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'تشفير بيانات متقدم' : 'ADVANCED ENCRYPTION'}
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

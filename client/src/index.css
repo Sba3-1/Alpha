@@ -171,41 +171,41 @@
     100% { --x: 85%; --y: 15%; --x2: 15%; --y2: 75%; }
   }
 
-  /* Cinematic Entrance Animations */
+  /* Cinematic Entrance Animations - Slower and Smoother */
   @keyframes slideFromRight {
     0% { transform: translateX(100%); opacity: 0; }
-    20%, 80% { transform: translateX(0); opacity: 1; }
+    15%, 85% { transform: translateX(0); opacity: 1; }
     100% { transform: translateX(100%); opacity: 0; }
   }
 
   @keyframes slideFromLeft {
     0% { transform: translateX(-100%); opacity: 0; }
-    20%, 80% { transform: translateX(0); opacity: 1; }
+    15%, 85% { transform: translateX(0); opacity: 1; }
     100% { transform: translateX(-100%); opacity: 0; }
   }
   
-  /* Moving Tech Grid Background */
+  /* Moving Tech Grid Background - Diagonal Movement */
   body::after {
     content: "";
     position: fixed;
-    top: -50%;
-    left: -50%;
-    right: -50%;
-    bottom: -50%;
+    top: -100%;
+    left: -100%;
+    right: -100%;
+    bottom: -100%;
     background-image: 
-      linear-gradient(rgba(0, 163, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 163, 255, 0.08) 1px, transparent 1px);
-    background-size: 50px 50px;
+      linear-gradient(rgba(0, 163, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 163, 255, 0.1) 1px, transparent 1px);
+    background-size: 60px 60px;
     pointer-events: none;
     z-index: -1;
-    opacity: 0.6;
-    animation: gridMove 60s linear infinite;
-    mask-image: radial-gradient(circle at center, black, transparent 90%);
+    opacity: 0.5;
+    animation: gridMove 40s linear infinite;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
 
   @keyframes gridMove {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(50px); }
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
   }
 
   /* Random Glowing Lines Effect */
