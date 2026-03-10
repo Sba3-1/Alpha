@@ -20,12 +20,12 @@ const translations = {
     browseBot: "تصفح البوتات",
     title: "متجر ألفا",
     description: "بوتات Discord متقدمة مصممة بدقة. اكتشف واشتري وادمج أدوات أتمتة قوية لخادمك",
-    precision: "الدقة",
-    precisionDesc: "مصممة بتميز تقني وبدقة رياضية",
-    secure: "آمن",
-    secureDesc: "مصادقة Discord مع ربط حساب موثق",
-    scalable: "قابل للتوسع",
-    scalableDesc: "مبني للنمو مع بنية تحتية من الدرجة الأولى",
+    precision: "موثوق في العمل الحر",
+    precisionDesc: "نحن جهة موثوقة ومعتمدة في منصات العمل الحر لضمان جودة الخدمة",
+    secure: "أمان فائق",
+    secureDesc: "نظام تشفير متقدم لحماية بياناتك ومعاملاتك من أي تسريب",
+    scalable: "حماية متكاملة",
+    scalableDesc: "الموقع محمي بأحدث تقنيات الحماية ضد الهجمات الإلكترونية",
     footer: "© 2026 متجر ألفا. جميع الحقوق محفوظة. | مصمم بدقة.",
   },
   en: {
@@ -37,12 +37,12 @@ const translations = {
     browseBot: "Browse Bots",
     title: "ALPHA STORE",
     description: "Premium Discord bots engineered with precision. Discover, purchase, and integrate powerful automation tools for your server.",
-    precision: "PRECISION",
-    precisionDesc: "Engineered with technical excellence and mathematical precision",
-    secure: "SECURE",
-    secureDesc: "Discord OAuth authentication with verified account linking",
-    scalable: "SCALABLE",
-    scalableDesc: "Built for growth with enterprise-grade infrastructure",
+    precision: "FREELANCE TRUSTED",
+    precisionDesc: "Verified and trusted in freelance platforms ensuring top-tier service quality",
+    secure: "ULTRA SECURE",
+    secureDesc: "Advanced encryption systems to protect your data and transactions from leaks",
+    scalable: "FULL PROTECTION",
+    scalableDesc: "The site is protected with the latest security technologies against cyber attacks",
     footer: "© 2026 Alpha Store. All rights reserved. | Engineered with precision.",
   },
 };
@@ -54,6 +54,29 @@ export default function Home() {
   useEffect(() => {
     const savedLang = (localStorage.getItem("language") as Language) || "en";
     setLanguage(savedLang);
+
+    // Security Protection: Prevent right-click, copy, and F12
+    const handleContextMenu = (e: MouseEvent) => e.preventDefault();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && e.key === "u")
+      ) {
+        e.preventDefault();
+      }
+    };
+    const handleCopy = (e: ClipboardEvent) => e.preventDefault();
+
+    document.addEventListener("contextmenu", handleContextMenu);
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("copy", handleCopy);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("copy", handleCopy);
+    };
   }, []);
 
   const t = translations[language];
@@ -131,7 +154,32 @@ export default function Home() {
               {t.description}
             </p>
 
-            <div className="flex gap-4 justify-center flex-wrap">
+            {/* Features Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 text-right" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-all">
+                <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04custom-variant dark (&:is(.dark *));A11.955 11.955 0 0112 21.056a11.955 11.955 0 018.618-3.04z"></path></svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{t.secure}</h3>
+                <p className="text-muted-foreground">{t.secureDesc}</p>
+              </div>
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-all">
+                <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{t.scalable}</h3>
+                <p className="text-muted-foreground">{t.scalableDesc}</p>
+              </div>
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-all">
+                <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{t.precision}</h3>
+                <p className="text-muted-foreground">{t.precisionDesc}</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 justify-center flex-wrap mt-12">
               <Link href="/marketplace">
                 <Button size="lg" className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-2xl px-10 py-8 text-xl shadow-[0_0_30px_rgba(34,211,238,0.2)]">
                   <ShoppingCart className="w-6 h-6" />
