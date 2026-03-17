@@ -108,12 +108,12 @@ export default function Home() {
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
       {/* Navigation Header - Centered Floating */}
-      <header className="fixed top-[34px] left-1/2 transform -translate-x-1/2 z-50">
-        <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-4 flex items-center justify-between gap-16">
+      <header className="fixed top-[20px] left-1/2 transform -translate-x-1/2 z-50 w-full max-w-5xl px-4">
+        <div className="bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-3 flex items-center justify-between shadow-2xl">
           {/* Left Side - Logo */}
-          <div className="flex items-center gap-4">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-24 h-24 object-contain drop-shadow-[0_0_15px_rgba(0,163,255,0.3)]" />
-            <span className="text-2xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
+          <div className="flex items-center gap-3">
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-12 h-12 object-contain drop-shadow-[0_0_10px_rgba(0,163,255,0.4)]" />
+            <span className="text-xl font-black text-white tracking-tighter">ALPHA STORE</span>
           </div>
 
           {/* Center - Menu */}
@@ -158,7 +158,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-40 pb-24 px-4">
+      <section className="pt-64 pb-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
 
