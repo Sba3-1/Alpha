@@ -107,52 +107,53 @@ export default function Home() {
         className="grid-glow" 
         style={{ '--gx': glowPos.x, '--gy': glowPos.y } as React.CSSProperties}
       ></div>
-      {/* Navigation Header - Centered Floating */}      <header className="fixed top-[24px] left-1/2 transform -translate-x-1/2 z-50 w-fit px-4">
-        <div className="bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-3xl px-10 py-3 flex items-center justify-center gap-12 shadow-2xl">2xl">
-          {/* Left Side - Logo */}
-          <div className="flex items-center gap-3">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(0,163,255,0.4)]" />
-            <span className="text-lg font-black text-white tracking-tighter">ALPHA STORE</span>
+      {/* Navigation Header - Centered Floating */}
+      <header className="fixed top-[24px] left-1/2 transform -translate-x-1/2 z-50 w-fit px-4">
+        <div className="bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-3xl px-8 py-2.5 flex items-center gap-8 shadow-2xl">
+          {/* Logo Section */}
+          <div className="flex items-center gap-3 pr-4 border-r border-white/10">
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-9 h-9 object-contain drop-shadow-[0_0_10px_rgba(0,163,255,0.4)]" />
+            <span className="text-base font-black text-white tracking-tighter">ALPHA STORE</span>
           </div>
 
-          {/* Center - Menu */}
-          <nav className="flex items-center gap-8">
-            <Link href="/marketplace">
-              <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                <ShoppingCart className="w-4 h-4" />
-                {t.marketplace}
+          {/* Menu Items - All at the same level with equal gaps */}
+          <Link href="/marketplace">
+            <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
+              <ShoppingCart className="w-4 h-4" />
+              {t.marketplace}
+            </span>
+          </Link>
+          
+          {isAuthenticated && hasBots && (
+            <Link href="/dashboard">
+              <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                <LayoutDashboard className="w-4 h-4" />
+                {t.dashboard}
               </span>
             </Link>
+          )}
 
-            {isAuthenticated && hasBots && (
-              <Link href="/dashboard">
-                <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                  <LayoutDashboard className="w-4 h-4" />
-                  {t.dashboard}
-                </span>
-              </Link>
-            )}
-
-            {isAuthenticated && isAdmin && (
-              <Link href="/admin">
-                <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
-                  <Settings className="w-4 h-4" />
-                  {t.admin}
-                </span>
-              </Link>
-            )}
-          </nav>
-
-          {/* Right Side - Profile/Auth */}
-          {isAuthenticated ? (
-            <ProfileDropdown />
-          ) : (
-            <Link href="/login">
-              <Button className="gap-2 bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-lg px-8 py-3 text-base">
-                {t.signIn}
-              </Button>
+          {isAuthenticated && isAdmin && (
+            <Link href="/admin">
+              <span className="text-sm font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                <Settings className="w-4 h-4" />
+                {t.admin}
+              </span>
             </Link>
           )}
+
+          {/* User Profile - Same level, same gap */}
+          <div className="pl-4 border-l border-white/10">
+            {isAuthenticated ? (
+              <ProfileDropdown />
+            ) : (
+              <Link href="/login">
+                <Button className="bg-cyan-400 hover:bg-cyan-500 text-black font-bold rounded-xl px-5 py-1.5 text-sm">
+                  {t.signIn}
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
