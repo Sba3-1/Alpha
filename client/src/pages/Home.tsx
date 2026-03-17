@@ -117,7 +117,7 @@ export default function Home() {
           </div>
 
           {/* Center - Menu */}
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-10">
             <Link href="/marketplace">
               <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
                 <ShoppingCart className="w-4 h-4" />
