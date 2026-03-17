@@ -112,14 +112,15 @@ export default function Home() {
         <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-4 flex items-center justify-between gap-16">
           {/* Left Side - Logo */}
           <div className="flex items-center gap-2">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-16 h-16" />
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-16 h-16 object-contain" />
             <span className="text-lg font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
           {/* Center - Menu */}
           <nav className="flex items-center gap-6">
             <Link href="/marketplace">
-              <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors cursor-pointer">
+              <span className="text-base font-bold text-foreground/90 hover:text-cyan-400 transition-colors flex items-center gap-2 cursor-pointer">
+                <ShoppingCart className="w-4 h-4" />
                 {t.marketplace}
               </span>
             </Link>
@@ -160,6 +161,14 @@ export default function Home() {
       <section className="pt-40 pb-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
+            <div className="mb-8 flex justify-center">
+              <img 
+                src={ALPHA_LOGO_URL} 
+                alt="Alpha Store" 
+                className="w-72 h-72 object-contain drop-shadow-[0_0_40px_rgba(0,163,255,0.4)] hover:scale-105 transition-transform duration-700" 
+              />
+            </div>
+
             <div className="relative mb-8 min-h-[160px] flex flex-col items-center justify-center overflow-hidden">
               <h1 className="text-7xl md:text-8xl font-black mb-6 text-white leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
                 {t.title}
