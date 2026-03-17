@@ -161,11 +161,11 @@ export default function Home() {
       <section className="pt-40 pb-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <div className="mb-8 flex justify-center">
+            <div className="mb-10 flex justify-center">
               <img 
                 src={ALPHA_LOGO_URL} 
                 alt="Alpha Store" 
-                className="w-72 h-72 object-contain drop-shadow-[0_0_40px_rgba(0,163,255,0.4)] hover:scale-105 transition-transform duration-700" 
+                className="w-[450px] h-auto max-h-[450px] object-contain drop-shadow-[0_0_60px_rgba(0,163,255,0.5)] hover:scale-105 transition-transform duration-700" 
               />
             </div>
 
