@@ -111,9 +111,9 @@ export default function Home() {
       <header className="fixed top-[34px] left-1/2 transform -translate-x-1/2 z-50">
         <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/50 rounded-3xl px-12 py-4 flex items-center justify-between gap-16">
           {/* Left Side - Logo */}
-          <div className="flex items-center gap-2">
-            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-16 h-16 object-contain" />
-            <span className="text-lg font-black text-foreground tracking-tighter">ALPHA STORE</span>
+          <div className="flex items-center gap-4">
+            <img src={ALPHA_LOGO_URL} alt="Alpha Store" className="w-24 h-24 object-contain drop-shadow-[0_0_15px_rgba(0,163,255,0.3)]" />
+            <span className="text-2xl font-black text-foreground tracking-tighter">ALPHA STORE</span>
           </div>
 
           {/* Center - Menu */}
@@ -161,13 +161,7 @@ export default function Home() {
       <section className="pt-40 pb-24 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
-            <div className="mb-10 flex justify-center">
-              <img 
-                src={ALPHA_LOGO_URL} 
-                alt="Alpha Store" 
-                className="w-[450px] h-auto max-h-[450px] object-contain drop-shadow-[0_0_60px_rgba(0,163,255,0.5)] hover:scale-105 transition-transform duration-700" 
-              />
-            </div>
+
 
             <div className="relative mb-8 min-h-[160px] flex flex-col items-center justify-center overflow-hidden">
               <h1 className="text-7xl md:text-8xl font-black mb-6 text-white leading-tight tracking-tighter animate-[slideFromRight_10s_ease-in-out_infinite]">
