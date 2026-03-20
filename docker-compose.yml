@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  alpha-store:
+    build: .
+    container_name: alpha-store
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://user:password@db:5432/alpha_db
+      - PORT=3000
+      # Add other environment variables here
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: alpha-db
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=alpha_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
